@@ -1,0 +1,2690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valère Blueprint — Site Opening & Operations Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ══ TOKENS ══════════════════════════════════════════════════════ */
+:root {
+  --teal:       #528489;
+  --teal-light: #6da0a6;
+  --teal-dark:  #446e73;
+  --teal-deep:  #1f4a50;
+  --navy:       #006B8F;
+  --navy-dark:  #005570;
+  --cyan:       #2ec4de;
+  --cyan-pale:  #c2ecf5;
+  --cream:      #f7f2ea;
+  --cream-dark: #ede5d8;
+  --ink:        #1a2e35;
+  --ink-mid:    #2f4a52;
+  --ink-light:  #4a6870;
+  --muted:      #7aa4aa;
+  --white:      #ffffff;
+  --rule:       rgba(82,132,137,0.22);
+  --rule-strong:rgba(82,132,137,0.45);
+  --card-bg:    rgba(255,255,255,0.98);
+  --shadow:     0 2px 24px rgba(26,46,53,0.10);
+  --shadow-lg:  0 8px 48px rgba(26,46,53,0.15);
+  --radius:     3px;
+  --radius-lg:  8px;
+  --sidebar-w:  280px;
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+
+  /* Status colors */
+  --status-green:  #2a7a55;
+  --status-green-bg: rgba(42,122,85,0.08);
+  --status-amber:  #b06820;
+  --status-amber-bg: rgba(176,104,32,0.08);
+  --status-red:    #a03030;
+  --status-red-bg: rgba(160,48,48,0.08);
+  --status-blue:   #1a5fa0;
+  --status-blue-bg: rgba(26,95,160,0.08);
+}
+
+/* ══ RESET ═══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--cream-dark)}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:3px}
+
+/* ══ COVER ═══════════════════════════════════════════════════════ */
+#cover{
+  min-height:100vh;
+  background:#528489;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Blueprint grid overlay */
+#cover::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(82,132,137,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(82,132,137,0.04) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+
+/* Architectural arc */
+.cover-arc{
+  position:absolute;
+  right:-200px; top:-200px;
+  width:700px; height:700px;
+  border:1px solid rgba(82,132,137,0.1);
+  border-radius:50%;
+  pointer-events:none;
+}
+.cover-arc-2{
+  position:absolute;
+  right:-120px; top:-120px;
+  width:500px; height:500px;
+  border:1px solid rgba(82,132,137,0.06);
+  border-radius:50%;
+  pointer-events:none;
+}
+.cover-arc-3{
+  position:absolute;
+  left:-100px; bottom:-100px;
+  width:400px; height:400px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+/* Gold rule top */
+.cover-top{
+  padding:2.5rem 3.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;z-index:2;
+  border-bottom:1px solid rgba(82,132,137,0.15);
+}
+.cover-wordmark{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:400;
+  font-size:1rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.4);
+}
+.cover-wordmark em{color:var(--cyan);font-style:italic}
+.cover-badge{
+  font-family:'DM Mono',monospace;
+  font-size:0.6rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(82,132,137,0.5);
+  border:1px solid rgba(82,132,137,0.2);
+  padding:0.3rem 0.7rem;
+  border-radius:2px;
+}
+
+.cover-center{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:4rem 3rem;
+  position:relative;z-index:2;
+}
+
+.cover-number{
+  font-family:'DM Mono',monospace;
+  font-size:0.65rem;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin-bottom:2rem;
+  opacity:0;animation:fadeUp 0.8s 0.2s forwards;
+  display:flex;align-items:center;gap:1rem;
+}
+.cover-number::before,.cover-number::after{
+  content:'';display:block;
+  width:40px;height:1px;
+  background:var(--cyan);opacity:0.4;
+}
+
+.cover-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:300;
+  font-size:clamp(4rem,9vw,8.5rem);
+  line-height:0.9;
+  color:var(--white);
+  letter-spacing:-0.02em;
+  opacity:0;animation:fadeUp 0.9s 0.35s forwards;
+}
+.cover-title em{
+  font-style:italic;font-weight:400;
+  color:var(--cyan);
+}
+
+.cover-subtitle{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:300;font-style:italic;
+  font-size:clamp(1.8rem,3.5vw,3rem);
+  color:rgba(255,255,255,0.4);
+  margin-top:0.75rem;
+  letter-spacing:0.05em;
+  opacity:0;animation:fadeUp 0.9s 0.5s forwards;
+}
+
+.cover-divider{
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  margin:2.5rem auto;
+  opacity:0;animation:fadeUp 0.8s 0.65s forwards;
+}
+
+.cover-desc{
+  max-width:500px;
+  font-family:'Outfit',sans-serif;
+  font-weight:300;font-size:0.95rem;
+  line-height:1.8;letter-spacing:0.02em;
+  color:rgba(255,255,255,0.4);
+  opacity:0;animation:fadeUp 0.9s 0.8s forwards;
+}
+
+.cover-cta{
+  margin-top:3rem;
+  opacity:0;animation:fadeUp 0.9s 1.0s forwards;
+}
+.cover-cta a{
+  display:inline-block;
+  padding:0.9rem 2.75rem;
+  background:transparent;
+  border:1px solid rgba(82,132,137,0.45);
+  color:var(--cyan);
+  text-decoration:none;
+  font-family:'DM Mono',monospace;
+  font-size:0.68rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  border-radius:2px;
+  transition:all var(--transition);
+}
+.cover-cta a:hover{
+  background:var(--cyan);
+  color:var(--teal-deep);
+  border-color:var(--cyan);
+}
+
+.cover-bottom{
+  padding:2rem 3.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid rgba(82,132,137,0.1);
+  position:relative;z-index:2;
+  opacity:0;animation:fadeIn 1s 1.2s forwards;
+}
+.cover-meta{
+  font-family:'DM Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.14em;
+  text-transform:uppercase;color:rgba(255,255,255,0.18);
+}
+.cover-status{
+  display:flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(82,132,137,0.4);
+}
+.status-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--teal);
+  animation:pulse 2s infinite;
+}
+
+/* ══ LAYOUT ═══════════════════════════════════════════════════════ */
+#app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh;
+}
+
+/* ── SIDEBAR ────────────────────────────────────────────────────── */
+#sidebar{
+  background:var(--navy);
+  position:sticky;top:0;height:100vh;
+  overflow-y:auto;
+  display:flex;flex-direction:column;
+  border-right:1px solid rgba(82,132,137,0.12);
+  scrollbar-width:thin;
+  scrollbar-color:var(--teal) transparent;
+}
+
+.sidebar-header{
+  padding:2rem 1.5rem 1.25rem;
+  border-bottom:1px solid rgba(82,132,137,0.12);
+}
+.sidebar-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;font-size:1.35rem;
+  color:var(--white);letter-spacing:0.04em;
+}
+.sidebar-logo em{font-style:italic;color:rgba(255,255,255,0.75);font-weight:400}
+.sidebar-sub{
+  font-family:'DM Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(82,132,137,0.4);margin-top:0.3rem;
+}
+
+.sidebar-search{
+  margin:1rem 1.25rem;position:relative;
+}
+.sidebar-search input{
+  width:100%;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(82,132,137,0.15);
+  border-radius:var(--radius);
+  padding:0.5rem 0.75rem 0.5rem 2.25rem;
+  color:var(--white);
+  font-family:'Outfit',sans-serif;font-size:0.8rem;
+  outline:none;transition:border-color var(--transition);
+}
+.sidebar-search input::placeholder{color:rgba(255,255,255,0.3);font-size:0.78rem}
+.sidebar-search input:focus{border-color:rgba(82,132,137,0.45)}
+.sidebar-search svg{
+  position:absolute;left:0.65rem;top:50%;transform:translateY(-50%);
+  width:13px;height:13px;stroke:rgba(82,132,137,0.4);stroke-width:2;fill:none;
+}
+
+.sidebar-nav{flex:1;padding:0.5rem 0 2rem}
+
+.nav-section-label{
+  font-family:'DM Mono',monospace;font-size:0.54rem;
+  letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(82,132,137,0.35);
+  padding:1rem 1.5rem 0.4rem;
+}
+
+.nav-item{
+  display:block;
+  padding:0.5rem 1.5rem 0.5rem 1.25rem;
+  border-left:2px solid transparent;
+  text-decoration:none;
+  font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:400;
+  color:rgba(255,255,255,0.5);
+  transition:all var(--transition);cursor:pointer;
+}
+.nav-item:hover{
+  color:var(--white);
+  border-left-color:rgba(82,132,137,0.5);
+  background:rgba(82,132,137,0.06);
+}
+.nav-item.active{
+  color:var(--teal-light);
+  border-left-color:var(--teal);
+  background:rgba(82,132,137,0.08);
+  font-weight:500;
+}
+
+.nav-sub .nav-item{
+  font-size:0.76rem;
+  color:rgba(255,255,255,0.35);
+  padding:0.32rem 1.5rem 0.32rem 1.75rem;
+}
+.nav-sub .nav-item:hover{color:rgba(255,255,255,0.75)}
+.nav-sub .nav-item.active{color:var(--teal-light);background:rgba(82,132,137,0.06)}
+
+.sidebar-footer{
+  padding:1.25rem 1.5rem;
+  border-top:1px solid rgba(82,132,137,0.1);
+  font-family:'DM Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.18);line-height:1.9;
+}
+
+/* ── MAIN ───────────────────────────────────────────────────────── */
+#main{
+  background:var(--cream);
+  overflow-y:auto;height:100vh;
+  scroll-behavior:smooth;
+}
+
+.section-block{border-bottom:1px solid var(--rule)}
+
+/* Section header — teal accent */
+.section-header{
+  background:linear-gradient(135deg,#528489 0%,#446e73 100%);
+  padding:4rem 4rem 3rem;
+  position:relative;overflow:hidden;
+}
+.section-header::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(82,132,137,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(82,132,137,0.03) 1px,transparent 1px);
+  background-size:32px 32px;pointer-events:none;
+}
+.section-header::after{
+  content:'';position:absolute;
+  right:-80px;top:-80px;
+  width:300px;height:300px;
+  border:1px solid rgba(82,132,137,0.08);
+  border-radius:50%;pointer-events:none;
+}
+
+.section-number{
+  font-family:'DM Mono',monospace;font-size:0.62rem;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:#528489;margin-bottom:0.75rem;
+  display:flex;align-items:center;gap:0.75rem;
+  position:relative;z-index:1;
+}
+.section-number::after{
+  content:'';flex:1;max-width:40px;
+  height:1px;background:#528489;opacity:0.6;
+}
+
+.section-header h1{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:700;
+  font-size:clamp(2rem,3.5vw,3.2rem);
+  color:var(--white);line-height:1.1;
+  letter-spacing:-0.01em;
+  position:relative;z-index:1;
+}
+.section-header h1 em{font-style:italic;color:var(--cyan);font-weight:300}
+
+.section-header p{
+  margin-top:1rem;font-size:0.92rem;font-weight:300;
+  color:rgba(255,255,255,0.45);max-width:560px;line-height:1.75;
+  position:relative;z-index:1;
+}
+
+/* Sticky tab */
+.sticky-tab{
+  position:sticky;top:0;z-index:10;
+  background:rgba(248,245,239,0.93);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
+  padding:0.6rem 4rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sticky-tab-name{
+  font-family:'DM Mono',monospace;font-size:0.62rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:#528489;
+}
+.sticky-tab-back{
+  font-family:'DM Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;cursor:pointer;
+  transition:color var(--transition);
+}
+.sticky-tab-back:hover{color:var(--teal)}
+
+/* Content area */
+.content-area{padding:3rem 4rem 4rem}
+
+/* ── CARDS ──────────────────────────────────────────────────────── */
+.protocol-card{
+  background:var(--card-bg);
+  border:1px solid rgba(82,132,137,0.15);
+  border-radius:var(--radius-lg);
+  margin-bottom:1.75rem;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:box-shadow var(--transition);
+}
+.protocol-card:hover{box-shadow:var(--shadow-lg)}
+
+.card-header{
+  padding:1.5rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;border-bottom:1px solid transparent;
+  transition:all var(--transition);user-select:none;
+}
+.card-header:hover{background:rgba(82,132,137,0.03)}
+.card-open .card-header{
+  border-bottom-color:rgba(82,132,137,0.15);
+  background:rgba(82,132,137,0.03);
+}
+
+.card-title-group{display:flex;align-items:center;gap:1rem;flex:1}
+.card-icon{
+  width:40px;height:40px;border-radius:8px;
+  background:linear-gradient(135deg,#528489,#446e73);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1.1rem;
+  border:1px solid rgba(82,132,137,0.2);
+}
+.card-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;font-size:1.2rem;
+  color:var(--ink);letter-spacing:-0.01em;
+}
+.card-subtitle{
+  font-family:'DM Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.14em;color:var(--muted);
+  text-transform:uppercase;margin-top:0.2rem;
+}
+.card-chevron{
+  width:18px;height:18px;stroke:var(--muted);
+  stroke-width:2;fill:none;
+  transition:transform var(--transition);flex-shrink:0;
+}
+.card-open .card-chevron{transform:rotate(180deg)}
+
+.card-body{display:none;padding:2rem 2rem 2.25rem}
+.card-open .card-body{display:block}
+
+/* ── TYPOGRAPHY INSIDE CARDS ─────────────────────────────────────── */
+.protocol-section{margin-bottom:1.75rem}
+.protocol-section:last-child{margin-bottom:0}
+
+.proto-label{
+  font-family:'DM Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:0.5rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.proto-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+.proto-text{
+  font-size:0.9rem;line-height:1.78;
+  color:var(--ink-mid);font-weight:300;
+}
+
+.proto-list{list-style:none;margin-top:0.5rem}
+.proto-list li{
+  font-size:0.88rem;line-height:1.72;
+  color:var(--ink-mid);padding:0.2rem 0 0.2rem 1.25rem;
+  position:relative;font-weight:300;
+}
+.proto-list li::before{
+  content:'';position:absolute;left:0;top:0.72rem;
+  width:6px;height:1px;background:var(--teal);
+}
+.proto-list.numbered{counter-reset:n}
+.proto-list.numbered li{padding-left:1.75rem}
+.proto-list.numbered li::before{
+  counter-increment:n;content:counter(n)'.';
+  width:auto;height:auto;background:none;
+  font-family:'DM Mono',monospace;font-size:0.65rem;
+  color:var(--teal);top:0.25rem;
+}
+
+/* Boxes */
+.note-box{
+  margin:1.25rem 0;padding:1rem 1.25rem;
+  border-left:3px solid var(--teal);
+  background:rgba(82,132,137,0.06);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.note-box .note-label{
+  font-family:'DM Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:#528489;margin-bottom:0.4rem;
+}
+.note-box .note-text{
+  font-size:0.86rem;line-height:1.72;
+  color:var(--ink-mid);font-weight:300;
+}
+
+.warn-box{
+  margin:1.25rem 0;padding:1rem 1.25rem;
+  border-left:3px solid #c0602a;
+  background:rgba(192,96,42,0.06);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.warn-box .note-label{color:#c0602a}
+.warn-box .note-text{color:var(--ink-mid);font-size:0.86rem;line-height:1.72;font-weight:300}
+
+.success-box{
+  margin:1.25rem 0;padding:1rem 1.25rem;
+  border-left:3px solid var(--status-green);
+  background:var(--status-green-bg);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.success-box .note-label{color:var(--status-green);font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:0.4rem}
+.success-box .note-text{font-size:0.86rem;line-height:1.72;color:var(--ink-mid);font-weight:300}
+
+/* Tables */
+.proto-table{width:100%;border-collapse:collapse;margin-top:0.75rem;font-size:0.84rem}
+.proto-table th{
+  background:#528489;color:var(--white);
+  font-family:'DM Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.14em;text-transform:uppercase;font-weight:400;
+  padding:0.65rem 1rem;text-align:left;
+}
+.proto-table td{
+  padding:0.6rem 1rem;border-bottom:1px solid var(--rule);
+  color:var(--ink-mid);font-weight:300;line-height:1.5;vertical-align:top;
+}
+.proto-table tr:nth-child(even) td{background:rgba(82,132,137,0.03)}
+.proto-table tr:last-child td{border-bottom:none}
+
+/* Grid layouts */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:0.75rem}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:0.75rem}
+.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:0.75rem}
+
+.info-block{
+  background:var(--cream);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:1rem 1.1rem;
+}
+.info-block .info-label{
+  font-family:'DM Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:#528489;margin-bottom:0.4rem;
+}
+.info-block .info-val{
+  font-size:0.85rem;line-height:1.65;
+  color:var(--ink-mid);font-weight:300;
+}
+
+/* Badge */
+.badge{
+  display:inline-block;padding:0.18rem 0.55rem;border-radius:2px;
+  font-family:'DM Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.1em;text-transform:uppercase;font-weight:400;
+}
+.badge-teal-muted{background:rgba(82,132,137,0.12);color:#446e73}
+.badge-navy{background:rgba(26,46,53,0.08);color:var(--navy-light)}
+.badge-green{background:var(--status-green-bg);color:var(--status-green)}
+.badge-amber{background:var(--status-amber-bg);color:var(--status-amber)}
+.badge-red{background:var(--status-red-bg);color:var(--status-red)}
+.badge-blue{background:var(--status-blue-bg);color:var(--status-blue)}
+
+/* Phase indicator */
+.phase-strip{
+  display:flex;align-items:stretch;gap:0;
+  margin:1.25rem 0;border:1px solid var(--rule);
+  border-radius:var(--radius-lg);overflow:hidden;
+}
+.phase-item{
+  flex:1;padding:1rem;
+  border-right:1px solid var(--rule);
+  background:var(--white);
+}
+.phase-item:last-child{border-right:none}
+.phase-item.active{background:#1f4a50}
+.phase-num{
+  font-family:'DM Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:#528489;margin-bottom:0.25rem;
+}
+.phase-item.active .phase-num{color:var(--teal-light)}
+.phase-label{
+  font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:500;
+  color:var(--ink);
+}
+.phase-item.active .phase-label{color:var(--white)}
+.phase-time{
+  font-family:'DM Mono',monospace;font-size:0.6rem;
+  color:var(--muted);margin-top:0.2rem;
+}
+.phase-item.active .phase-time{color:rgba(255,255,255,0.45)}
+
+/* Financial highlight */
+.fin-card{
+  background:#1f4a50;border-radius:var(--radius-lg);
+  padding:1.5rem;margin:0.5rem 0;
+  border:1px solid rgba(82,132,137,0.2);
+}
+.fin-card .fin-label{
+  font-family:'DM Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(82,132,137,0.6);margin-bottom:0.5rem;
+}
+.fin-card .fin-value{
+  font-family:'Cormorant Garamond',serif;font-size:2rem;
+  font-weight:700;color:var(--white);line-height:1;
+}
+.fin-card .fin-value em{
+  font-style:italic;font-size:1.1rem;
+  color:var(--teal-light);font-weight:400;
+}
+.fin-card .fin-sub{
+  font-size:0.78rem;font-weight:300;
+  color:rgba(255,255,255,0.4);margin-top:0.4rem;line-height:1.5;
+}
+
+/* Checklist */
+.checklist{list-style:none;margin-top:0.5rem}
+.checklist li{
+  display:flex;align-items:flex-start;gap:0.75rem;
+  padding:0.45rem 0;border-bottom:1px solid var(--rule);
+  font-size:0.87rem;line-height:1.6;color:var(--ink-mid);font-weight:300;
+}
+.checklist li:last-child{border-bottom:none}
+.check-box{
+  width:16px;height:16px;border:1.5px solid rgba(82,132,137,0.4);
+  border-radius:3px;flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;
+}
+.checklist li.done .check-box{
+  background:#528489;border-color:#528489;
+}
+.checklist li.done .check-box::after{
+  content:'✓';color:var(--white);font-size:0.6rem;font-weight:700;
+}
+
+/* Timeline */
+.timeline{position:relative;padding-left:2rem;margin-top:0.75rem}
+.timeline::before{
+  content:'';position:absolute;left:0.4rem;top:0.5rem;bottom:0.5rem;
+  width:1px;background:linear-gradient(to bottom,var(--teal),rgba(82,132,137,0.2));
+}
+.timeline-item{position:relative;margin-bottom:1.5rem}
+.timeline-item:last-child{margin-bottom:0}
+.timeline-dot{
+  position:absolute;left:-1.65rem;top:0.3rem;
+  width:10px;height:10px;border-radius:50%;
+  background:#528489;border:2px solid var(--cream);
+  box-shadow:0 0 0 2px #528489;
+}
+.timeline-item.future .timeline-dot{
+  background:transparent;border-color:var(--teal);
+  box-shadow:0 0 0 2px rgba(82,132,137,0.3);
+}
+.timeline-week{
+  font-family:'DM Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:#528489;margin-bottom:0.25rem;
+}
+.timeline-title{
+  font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:500;
+  color:var(--ink);margin-bottom:0.25rem;
+}
+.timeline-desc{
+  font-size:0.84rem;font-weight:300;
+  color:var(--ink-mid);line-height:1.65;
+}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(10px);transition:opacity 0.5s ease,transform 0.5s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* Animations */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeIn{
+  from{opacity:0}to{opacity:1}
+}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(0.85)}
+}
+
+/* Responsive */
+@media(max-width:900px){
+  :root{--sidebar-w:0px}
+  #app{grid-template-columns:1fr}
+  #sidebar{display:none}
+  .section-header,.content-area,.sticky-tab{padding-left:1.5rem;padding-right:1.5rem}
+  .two-col,.three-col,.four-col{grid-template-columns:1fr}
+  .phase-strip{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ════════════════════════════════════════════════════ -->
+<section id="cover">
+  <div class="cover-arc"></div>
+  <div class="cover-arc-2"></div>
+  <div class="cover-arc-3"></div>
+
+  <div class="cover-top">
+    <div class="cover-wordmark">Val<em>è</em>re by CDR Health</div>
+    <div class="cover-badge">Confidential · Internal Use Only</div>
+  </div>
+
+  <div class="cover-center">
+    <div class="cover-number">Operational Playbook · 2026</div>
+    <h1 class="cover-title">The Val<em>è</em>re<br>Blueprint</h1>
+    <div class="cover-subtitle">Site Opening & Operations</div>
+    <div class="cover-divider"></div>
+    <p class="cover-desc">The complete operational, financial, and strategic framework for opening and running new Valère sites — from market selection to first patient, and every system in between.</p>
+    <div class="cover-cta">
+      <a href="#app" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'});return false;">Open the Blueprint →</a>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cover-meta">Melani Davis, MSN, APRN, FNP-C &nbsp;·&nbsp; Valère by CDR Health &nbsp;·&nbsp; Tallahassee, FL</div>
+    <div class="cover-status"><div class="status-dot"></div>Active Document · 2026</div>
+  </div>
+</section>
+
+<!-- ══ APP ═══════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">Val<em>è</em>re Blueprint</div>
+      <div class="sidebar-sub">Site Opening & Operations · 2026</div>
+    </div>
+    <div class="sidebar-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search playbook..." id="search-input">
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Strategy</div>
+        <a class="nav-item" onclick="goto('s1')">§1 — Site Strategy & Selection</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s1-model')">The Valère Model</a>
+          <a class="nav-item" onclick="goto('s1-market')">Market Evaluation</a>
+          <a class="nav-item" onclick="goto('s1-criteria')">Site Selection Criteria</a>
+          <a class="nav-item" onclick="goto('s1-decision')">Go / No-Go Framework</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Legal & Licensing</div>
+        <a class="nav-item" onclick="goto('s2')">§2 — Legal, Licensing & Credentialing</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s2-entity')">Business Entity Setup</a>
+          <a class="nav-item" onclick="goto('s2-license')">State APRN Licensure</a>
+          <a class="nav-item" onclick="goto('s2-dea')">DEA & Controlled Substances</a>
+          <a class="nav-item" onclick="goto('s2-malpractice')">Malpractice & Insurance</a>
+          <a class="nav-item" onclick="goto('s2-cpa')">Collaborative Practice</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Finances</div>
+        <a class="nav-item" onclick="goto('s3')">§3 — Financial Planning & Modeling</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s3-startup')">Startup Cost Estimate</a>
+          <a class="nav-item" onclick="goto('s3-revenue')">Revenue Model</a>
+          <a class="nav-item" onclick="goto('s3-cashflow')">Cash Flow & Runway</a>
+          <a class="nav-item" onclick="goto('s3-pricing')">Service Pricing</a>
+          <a class="nav-item" onclick="goto('s3-break')">Break-Even Analysis</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Physical Space</div>
+        <a class="nav-item" onclick="goto('s4')">§4 — Space, Equipment & Buildout</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s4-space')">Space Requirements</a>
+          <a class="nav-item" onclick="goto('s4-lease')">Lease Negotiation</a>
+          <a class="nav-item" onclick="goto('s4-buildout')">Buildout & Design</a>
+          <a class="nav-item" onclick="goto('s4-equipment')">Equipment List</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Vendors & Tech</div>
+        <a class="nav-item" onclick="goto('s5')">§5 — Vendor & Tech Stack Setup</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s5-ehr')">EHR Configuration</a>
+          <a class="nav-item" onclick="goto('s5-pharmacy')">Pharmacy Relationships</a>
+          <a class="nav-item" onclick="goto('s5-lab')">Lab Accounts</a>
+          <a class="nav-item" onclick="goto('s5-supplement')">Fullscript Setup</a>
+          <a class="nav-item" onclick="goto('s5-tech')">Full Tech Stack</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Staffing</div>
+        <a class="nav-item" onclick="goto('s6')">§6 — Hiring & Staffing</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s6-model')">Staffing Model by Phase</a>
+          <a class="nav-item" onclick="goto('s6-hire')">Hiring Process</a>
+          <a class="nav-item" onclick="goto('s6-comp')">Compensation Structure</a>
+          <a class="nav-item" onclick="goto('s6-hr')">HR & Employment</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Launch</div>
+        <a class="nav-item" onclick="goto('s7')">§7 — Marketing & Pre-Launch</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s7-brand')">Brand Deployment</a>
+          <a class="nav-item" onclick="goto('s7-digital')">Digital Presence</a>
+          <a class="nav-item" onclick="goto('s7-referral')">Referral Network</a>
+          <a class="nav-item" onclick="goto('s7-launch')">Launch Campaign</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Opening</div>
+        <a class="nav-item" onclick="goto('s8')">§8 — Opening Day & First 90 Days</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s8-pre')">Pre-Opening Checklist</a>
+          <a class="nav-item" onclick="goto('s8-day1')">Opening Day Protocol</a>
+          <a class="nav-item" onclick="goto('s8-90')">First 90 Days Milestones</a>
+          <a class="nav-item" onclick="goto('s8-kpi')">KPIs & Dashboard</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Operations</div>
+        <a class="nav-item" onclick="goto('s9')">§9 — Ongoing Operations</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s9-daily')">Daily Operations</a>
+          <a class="nav-item" onclick="goto('s9-weekly')">Weekly Rhythms</a>
+          <a class="nav-item" onclick="goto('s9-monthly')">Monthly Reviews</a>
+          <a class="nav-item" onclick="goto('s9-compliance')">Compliance Calendar</a>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Scale</div>
+        <a class="nav-item" onclick="goto('s10')">§10 — Growth & Expansion</a>
+        <div class="nav-sub">
+          <a class="nav-item" onclick="goto('s10-telehealth')">Telehealth Expansion</a>
+          <a class="nav-item" onclick="goto('s10-multisite')">Multi-Site Model</a>
+          <a class="nav-item" onclick="goto('s10-beyond')">Beyond Baseline Integration</a>
+          <a class="nav-item" onclick="goto('s10-supplement')">Supplement Brand</a>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-footer">Valère by CDR Health<br>Tallahassee, FL 32308<br>Valerebycdr.com</div>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- §1 SITE STRATEGY -->
+    <div class="section-block" id="s1">
+      <div class="section-header">
+        <div class="section-number">Section 01</div>
+        <h1>Site <em>Strategy</em><br>& Selection</h1>
+        <p>How to evaluate a new market, score a potential site, and make a defensible go/no-go decision before committing capital.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§1 · Site Strategy & Selection</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s1-model" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🏗️</div>
+              <div><div class="card-title">The Valère Practice Model</div>
+              <div class="card-subtitle">Core design principles that must survive any new site</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="note-box" style="margin-bottom:1.25rem">
+              <div class="note-label">Practice Ownership — Valère Structure</div>
+              <div class="note-text">Valère by CDR Health is owned by <strong>Tina Vidal</strong> — a non-clinician owner. Clinical services are delivered by <strong>Melani Davis, MSN, APRN, FNP-C</strong> as the contracted clinical provider. This is a non-clinician-owned practice model, which has important implications for entity structure, CPOM compliance, and the delineation between business decisions (Tina) and clinical decisions (Melani). This distinction must be maintained and documented across all new sites. Valère is a <strong>100% cash-pay practice</strong> — no insurance is billed or accepted.</div>
+            </div>
+            <div class="proto-text" style="margin-bottom:1.25rem">Every Valère site — regardless of location, size, or market — must be built on the same clinical and operational foundation. What changes is the market context, the staffing mix, and the physical footprint. What never changes is the model.</div>
+            <div class="three-col">
+              <div class="info-block"><div class="info-label">Clinical Model</div><div class="info-val">Functional medicine optimization practice. Hormone therapy, peptide therapy, cardiometabolic, longevity. Provider-led, protocol-governed, lab-anchored. Not a medspa. Not a weight loss clinic. A precision medicine practice.</div></div>
+              <div class="info-block"><div class="info-label">Revenue Model</div><div class="info-val">100% cash-pay. No insurance billed or accepted. Membership and service fee structure. Supplement revenue via Fullscript. IV therapy as premium service line. Telehealth as geographic extension. Owner: Tina Vidal (non-clinician). Clinical provider: Melani Davis, APRN (contracted).</div></div>
+              <div class="info-block"><div class="info-label">Patient Model</div><div class="info-val">Adults 35–65 seeking optimization, not disease management. Health-aware, income-stable, willing to invest in preventive care. Retention-focused — patients stay for years, not visits.</div></div>
+            </div>
+            <div class="note-box" style="margin-top:1.25rem"><div class="note-label">Non-Negotiables Across All Sites</div>
+              <div class="note-text">Provider is an APRN with DEA registration and current CPA. All protocols follow The Valère Signal. Labs are drawn at every initiation and at defined monitoring intervals. Informed consent is documented every time. Emergency kit is stocked and inspected monthly. HIPAA-compliant platforms only. No clinical shortcuts regardless of market pressure.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s1-market" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🗺️</div>
+              <div><div class="card-title">Market Evaluation Framework</div>
+              <div class="card-subtitle">How to assess whether a market can support a Valère site</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Demand Indicators — Research These First</div>
+              <table class="proto-table">
+                <thead><tr><th>Indicator</th><th>Target Threshold</th><th>Where to Find It</th></tr></thead>
+                <tbody>
+                  <tr><td>Population 35–65 in 15-mile radius</td><td>&gt;80,000</td><td>US Census / ACS data, Census Reporter</td></tr>
+                  <tr><td>Median household income</td><td>&gt;$75,000</td><td>Census Bureau, Esri demographic reports</td></tr>
+                  <tr><td>College-educated adults (%)</td><td>&gt;35%</td><td>Census Bureau, City-Data.com</td></tr>
+                  <tr><td>Existing functional medicine / hormone clinics</td><td>&lt;3 direct competitors within 10 miles</td><td>Google Maps, Zocdoc, Psychology Today</td></tr>
+                  <tr><td>Google search volume — "testosterone therapy [city]"</td><td>500+ monthly searches</td><td>Google Keyword Planner, Semrush</td></tr>
+                  <tr><td>Employer base — health-benefit-offering employers</td><td>Several mid-to-large employers</td><td>LinkedIn, local Chamber of Commerce</td></tr>
+                  <tr><td>Physician referral density (PCPs, OBGYNs, urologists)</td><td>10+ potential referral partners</td><td>Google Maps, state medical board directory</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Competitive Landscape Assessment</div>
+              <ul class="proto-list">
+                <li>Search Google, Yelp, and Healthgrades for "hormone therapy," "testosterone clinic," "functional medicine," "menopause specialist," and "peptide therapy" in the target city</li>
+                <li>For each competitor: visit their website, note services offered, pricing (if visible), patient reviews, and gaps in their model</li>
+                <li>Assess: are they clinically rigorous or medspa-adjacent? Do they do labs? Do they have a provider vs. a wellness coordinator? The answer tells you where Valère sits in the market.</li>
+                <li>Check review sentiment — what are patients complaining about? Long waits, poor follow-up, cookie-cutter protocols, lack of personalization. These are Valère's entry points.</li>
+                <li>Note any direct-to-consumer telehealth competitors (Hims, Maximus, etc.) — these are price competitors, not clinical competitors. Position Valère on depth and personalization, not price.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s1-criteria" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📐</div>
+              <div><div class="card-title">Site Selection Criteria</div>
+              <div class="card-subtitle">Scoring framework for physical location decisions</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Location Scoring — Weight Each Factor</div>
+              <table class="proto-table">
+                <thead><tr><th>Factor</th><th>Weight</th><th>Ideal</th><th>Red Flag</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Accessibility & parking</strong></td><td>25%</td><td>Free parking, ground floor or easy elevator, signage visible from street</td><td>Paid parking structure, no visible signage, shared lobby with unrelated businesses</td></tr>
+                  <tr><td><strong>Demographics of immediate area</strong></td><td>20%</td><td>Professional office corridor, medical district, affluent neighborhood adjacent</td><td>Industrial area, high foot traffic retail (wrong demographic), hard to find</td></tr>
+                  <tr><td><strong>Proximity to complementary providers</strong></td><td>15%</td><td>Near PCPs, OBGYNs, gyms, medical centers, corporate offices</td><td>Isolated from any referral or foot traffic source</td></tr>
+                  <tr><td><strong>Lease terms & cost</strong></td><td>20%</td><td>Below $30/sq ft NNN, 3–5 year initial term, TI allowance available</td><td>Above $40/sq ft, no TI, short term with no options, personal guaranty required</td></tr>
+                  <tr><td><strong>Space configuration</strong></td><td>15%</td><td>2+ exam rooms, private consult/provider office, clean reception area, storage</td><td>Open layout requiring full buildout, insufficient plumbing for clinical use</td></tr>
+                  <tr><td><strong>Visibility & brand fit</strong></td><td>5%</td><td>Professional building, clean aesthetic, compatible neighbors</td><td>Strip mall, high-turnover retail neighbors, visually inconsistent with Valère brand</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Minimum Space Requirements</div>
+              <div class="three-col">
+                <div class="info-block"><div class="info-label">Minimum Viable Site</div><div class="info-val">800–1,200 sq ft. 2 exam rooms. 1 provider office/consult room. Reception/waiting. Clean storage. Single restroom. Adequate electrical for equipment.</div></div>
+                <div class="info-block"><div class="info-label">Standard Site</div><div class="info-val">1,200–1,800 sq ft. 3 exam rooms. Provider office. MA workspace. Reception. Staff restroom separate from patient. IV infusion station (1–2 chairs). Storage room.</div></div>
+                <div class="info-block"><div class="info-label">Full Site</div><div class="info-val">1,800–2,500 sq ft. 4+ exam rooms. Full IV infusion bay (3–4 chairs). Provider office. Conference/education room. Dedicated lab draw station. Full staff suite.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s1-decision" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">⚖️</div>
+              <div><div class="card-title">Go / No-Go Framework</div>
+              <div class="card-subtitle">The decision logic before committing to a new site</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="two-col">
+              <div>
+                <div class="proto-label">GO — All of These Must Be True</div>
+                <ul class="proto-list">
+                  <li>Target market population and income thresholds met</li>
+                  <li>APRN licensure obtainable in target state within 90 days</li>
+                  <li>DEA registration transferable or new registration obtainable</li>
+                  <li>Collaborative Practice Agreement physician identified and willing</li>
+                  <li>Compounding pharmacy relationship established for target state</li>
+                  <li>Physical space scored 70+ on site selection criteria</li>
+                  <li>Startup capital secured for 12-month runway (see §3)</li>
+                  <li>Staffing plan viable — at least MA and front desk identifiable</li>
+                  <li>Competitive differentiation is clear and defensible</li>
+                </ul>
+              </div>
+              <div>
+                <div class="proto-label">NO-GO — Any One of These Stops Expansion</div>
+                <ul class="proto-list">
+                  <li>APRN licensure requires &gt;6-month timeline or no provider (APRN or physician) available to staff the site</li>
+                  <li>Market has 3+ established, well-reviewed functional medicine competitors</li>
+                  <li>Startup capital does not cover 12-month operating costs</li>
+                  <li>No viable compounding pharmacy relationship in target state</li>
+                  <li>Lease terms require personal guaranty beyond standard term</li>
+                  <li>State has strict CPOM doctrine requiring professional ownership — MSO structure required (attorney-designed). This adds 4–8 weeks and $3K–$8K in legal fees vs. flexible states.</li>
+                  <li>Existing Tallahassee site not yet operationally stable and profitable</li>
+                </ul>
+              </div>
+            </div>
+            <div class="note-box" style="margin-top:1.25rem"><div class="note-label">The Sequencing Rule</div>
+              <div class="note-text">No new physical site opens until the Tallahassee site runs 90 consecutive days with positive cash flow and operational independence (runs without Melani managing daily operations). Telehealth expansion into new states can happen independently of physical site decisions — different risk profile, lower capital requirement.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §2 LEGAL & LICENSING -->
+    <div class="section-block" id="s2">
+      <div class="section-header">
+        <div class="section-number">Section 02</div>
+        <h1><em>Legal,</em> Licensing<br>& Credentialing</h1>
+        <p>Entity structure, state licensure, DEA registration, malpractice coverage, and collaborative practice agreements — everything required before you see a single patient.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§2 · Legal, Licensing & Credentialing</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s2-entity" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🏛️</div>
+              <div><div class="card-title">Business Entity Setup</div>
+              <div class="card-subtitle">Structure · State registration · Tax elections · Corporate practice rules</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Recommended Structure</div>
+              <div class="note-box"><div class="note-label">For a New Site in a New State</div>
+                <div class="note-text">Valère is owned by Tina Vidal, a non-clinician. This is a significant structural advantage — Valère is not constrained by professional corporation requirements that apply to clinician-owned practices in many states. However, some states apply Corporate Practice of Medicine (CPOM) doctrine differently to non-clinician owned entities that employ or contract with licensed providers. Verify with a healthcare attorney in each target state. A Management Services Organization (MSO) structure — where a separate management entity (owned by Tina) contracts with a professional entity (owned by or contracted through Melani) — is the standard compliant structure in restrictive CPOM states and is worth establishing as the default architecture even in flexible states.</div>
+              </div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Entity Setup Checklist</div>
+              <ul class="proto-list numbered">
+                <li>Engage healthcare attorney in target state — confirm corporate practice of medicine rules</li>
+                <li>Form LLC or MSO entity in target state — confirm structure with healthcare attorney given non-clinician ownership model. In CPOM-restrictive states, establish a separate professional entity (PA or PC) under or alongside the MSO.</li>
+                <li>Obtain EIN (Federal Employer Identification Number) from IRS — free, online, same day</li>
+                <li>Open dedicated business bank account — separate from existing practice accounts</li>
+                <li>Elect S-Corp tax treatment if LLC (consult CPA — typically beneficial once income exceeds $50K). Tina as owner and Melani as employed/contracted provider have different compensation structures — formalize this with CPA before opening.</li>
+                <li>Register for state business tax obligations — varies by state</li>
+                <li>File DBA ("doing business as") if operating under Valère name rather than entity name</li>
+                <li>Obtain business liability insurance — separate from malpractice (see §2.4)</li>
+                <li>Register for state sales tax if selling supplements, equipment, or taxable services</li>
+                <li>Obtain NPI (Type 2) for the new entity — apply at nppes.cms.hhs.gov</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Corporate Practice of Medicine — State Overview</div>
+              <table class="proto-table">
+                <thead><tr><th>State</th><th>CPOM Restriction</th><th>APRN Ownership</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Florida</strong></td><td>Moderate</td><td><span class="badge badge-green">Non-Clinician Ownership Permitted</span></td><td>Non-clinician ownership permitted via MSO/LLC structure. Melani functions as employed/contracted APRN provider. APRN Collaborative Practice Agreement still required for prescribing. Current Valère structure.</td></tr>
+                  <tr><td><strong>Arizona</strong></td><td>Low / Flexible</td><td><span class="badge badge-green">Non-Clinician Ownership Permitted</span></td><td>No physician or clinician ownership requirement. Non-clinician LLC ownership straightforward. Favorable first expansion state.</td></tr>
+                  <tr><td><strong>Colorado</strong></td><td>Low / Flexible</td><td><span class="badge badge-green">Non-Clinician Ownership Permitted</span></td><td>Non-clinician LLC ownership permitted. No mandatory physician CPA for contracted APRN providers. Telehealth-friendly.</td></tr>
+                  <tr><td><strong>Texas</strong></td><td>Strict</td><td><span class="badge badge-amber">MSO Structure Required</span></td><td>Strict CPOM doctrine. Non-clinician ownership requires a properly structured MSO with a separate professional entity. Adds complexity and cost. Consult Texas healthcare attorney before pursuing.</td></tr>
+                  <tr><td><strong>California</strong></td><td>Strict</td><td><span class="badge badge-amber">MSO Structure Required</span></td><td>Strict CPOM. Professional entity required for clinical services. MSO structure possible but complex and expensive. Not recommended as early expansion state.</td></tr>
+                  <tr><td><strong>Massachusetts</strong></td><td>Moderate</td><td><span class="badge badge-green">Non-Clinician Ownership Permitted</span></td><td>Non-clinician ownership of management entity permitted. After 3 years supervised practice, contracted APRN can prescribe independently. Current Melani license held.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="s2-license" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📜</div>
+              <div><div class="card-title">State APRN Licensure Process</div>
+              <div class="card-subtitle">Application timeline · Required documents · Common delays</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Standard Licensure Timeline by State Type</div>
+              <div class="three-col">
+                <div class="info-block" style="border-color:rgba(42,122,85,0.3)"><div class="info-label" style="color:var(--status-green)">Fast — 4–8 Weeks</div><div class="info-val">Arizona, Colorado, Montana, New Mexico. Online applications, streamlined verification. Apply 60 days before planned site opening.</div></div>
+                <div class="info-block" style="border-color:rgba(82,132,137,0.3)"><div class="info-label" style="color:#446e73">Moderate — 8–16 Weeks</div><div class="info-val">Florida, Massachusetts, most NLC states. Paper verification requirements, board review cycles. Apply 90–120 days before planned opening.</div></div>
+                <div class="info-block" style="border-color:rgba(160,48,48,0.3)"><div class="info-label" style="color:var(--status-red)">Slow — 16–26 Weeks</div><div class="info-val">Texas, California, New York. Heavy documentation requirements, backlog common. Apply 6+ months before planned opening. Consider these markets only after other sites are operational.</div></div>
+              </div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Documents Required for Most State APRN Applications</div>
+              <ul class="proto-list">
+                <li>Current Florida APRN license — certified copy (not a printout)</li>
+                <li>National certification — FNP-C certification from AANP or ANCC — current certificate</li>
+                <li>Nursing license from all previously licensed states — verified through nursys.com</li>
+                <li>Graduate transcripts — official sealed copies from University of South Alabama</li>
+                <li>Controlled substance history — DEA will verify independently</li>
+                <li>Malpractice history — completed by malpractice carrier on state form</li>
+                <li>Background check authorization — most states run independently through IdentoGo or similar</li>
+                <li>Employment/practice history — 5 years typically required, with supervisory contacts</li>
+                <li>Collaboration agreement — some states require before license is issued</li>
+              </ul>
+            </div>
+            <div class="warn-box" style="margin-top:1rem"><div class="note-label">Most Common Delay Causes</div>
+              <div class="note-text">Waiting for official transcripts rather than ordering immediately · Malpractice carrier taking more than 2 weeks to complete state forms — request early and follow up · Nursys verification delays for licenses from states not on the Nursys system · Background check scheduling backlog — book immediately after submitting application. Assign a calendar block to follow up on each pending item every 2 weeks.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s2-dea" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🔑</div>
+              <div><div class="card-title">DEA Registration for New Sites</div>
+              <div class="card-subtitle">New location registration · Multi-state requirements · Timeline</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Key Rules</div>
+              <ul class="proto-list">
+                <li><strong>DEA registration is site-specific:</strong> Your current Florida DEA registration is tied to 313 Norton Drive. A new physical location requires a new DEA registration or registration modification — even in the same state.</li>
+                <li><strong>New state = new state DEA registration:</strong> Each state requires its own DEA registration number. You cannot use your Florida DEA number to prescribe controlled substances for patients physically in another state under most circumstances (telehealth flexibilities are the current exception — see §13 of The Valère Signal).</li>
+                <li><strong>Timeline:</strong> New DEA registration typically takes 4–6 weeks for approval. Apply immediately after state APRN license is issued — DEA requires state license first.</li>
+                <li><strong>Fee:</strong> DEA registration fee is currently $888 for a 3-year term. Budget accordingly for each new state/location.</li>
+                <li><strong>Controlled substance inventory:</strong> Each new physical location requires its own controlled substance storage (Schedule III must be stored securely per DEA standards), logbook, and biennial inventory.</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">DEA New Site Application Checklist</div>
+              <ul class="proto-list numbered">
+                <li>Confirm state APRN license is issued and active in target state</li>
+                <li>Apply at DEA Diversion Control Division (deadiversion.usdoj.gov) for new registration</li>
+                <li>Specify new site address exactly as it will appear on prescriptions</li>
+                <li>Select appropriate practitioner type (mid-level practitioner in most states)</li>
+                <li>Submit payment ($888 for 3-year term)</li>
+                <li>Receive DEA registration certificate — post at registered address (required)</li>
+                <li>Register for state PDMP in new state if required (most states require PDMP enrollment)</li>
+                <li>Configure EPCS in EHR for new location DEA number</li>
+                <li>Establish secure storage for Schedule III controlled substances at new location</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s2-malpractice" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🛡️</div>
+              <div><div class="card-title">Malpractice & Business Insurance</div>
+              <div class="card-subtitle">Coverage requirements · Carrier selection · New state endorsements</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Malpractice Coverage Requirements</div>
+              <table class="proto-table">
+                <thead><tr><th>Coverage Type</th><th>Minimum Limits</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Professional liability (malpractice)</strong></td><td>$1M per claim / $3M aggregate</td><td>Some states require higher minimums — verify state requirements. Confirm telehealth and compounded medication coverage is explicitly included.</td></tr>
+                  <tr><td><strong>Occurrence vs. claims-made</strong></td><td>Occurrence preferred</td><td>Occurrence covers incidents that happen during the policy period regardless of when the claim is filed. Claims-made requires a "tail" policy when coverage ends. Occurrence is cleaner for multi-state expansion.</td></tr>
+                  <tr><td><strong>New state endorsement</strong></td><td>Required before practicing</td><td>Most carriers can add state endorsements to existing policy within 2–4 weeks. Contact carrier when APRN license is approved in new state.</td></tr>
+                  <tr><td><strong>General business liability</strong></td><td>$1M per occurrence / $2M aggregate</td><td>Covers slip-and-fall, property damage, advertising injury. Separate from malpractice. Required by most landlords as lease condition.</td></tr>
+                  <tr><td><strong>Workers' compensation</strong></td><td>Required in all states with employees</td><td>Required the moment you hire your first employee in any state. Rates vary significantly by state and job classification.</td></tr>
+                  <tr><td><strong>Property / contents insurance</strong></td><td>Replacement value of equipment</td><td>Cover all medical equipment, EHR hardware, and furnishings at replacement value, not actual cash value.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="note-box" style="margin-top:1rem"><div class="note-label">Carriers That Cover APRN Functional Medicine + Peptide Therapy</div>
+              <div class="note-text">Not all malpractice carriers will cover peptide therapy, compounded hormone prescribing, or IV therapy — especially for APRNs. Confirm coverage explicitly in writing before binding a policy. Carriers with established APRN functional medicine programs include: Nurses Service Organization (NSO), Healthcare Providers Service Organization (HPSO), ProAssurance, and The Doctors Company. Request quotes from at least 3 carriers. Explicitly disclose: peptide therapy, compounded medications, IV infusion therapy, and telehealth prescribing across state lines.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s2-cpa" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🤝</div>
+              <div><div class="card-title">Collaborative Practice Agreement</div>
+              <div class="card-subtitle">Finding a collaborating physician · Agreement terms · Ongoing requirements</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">When a CPA Is Required</div>
+              <ul class="proto-list">
+                <li>Required in Florida for all APRN prescribing regardless of experience level</li>
+                <li>Required in states without full independent APRN practice authority (varies — check The Valère Signal §13 for state list)</li>
+                <li>Not required in full-practice states (Arizona, Colorado, Montana, New Mexico) after meeting experience thresholds</li>
+                <li>Even in non-required states, having a collaborating physician as a clinical consultant is good practice and supports malpractice coverage</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Finding a Collaborating Physician in a New State</div>
+              <ul class="proto-list">
+                <li><strong>Internal medicine or family medicine physicians</strong> are the most common collaborators for Melani's prescribing authority — align with functional medicine or integrative medicine interest. Note: the collaborating physician relationship is with Melani as the clinical provider, not with Tina as the practice owner.</li>
+                <li>Search: state medical board directory, integrative medicine networks (IFM physician member directory), local medical associations</li>
+                <li>Warm approach works best — email or call directly explaining the Valère model, compensation structure, and expected time commitment (typically minimal for a well-run APRN practice)</li>
+                <li>Paid CPA arrangements are legal and standard — typical range is $500–$2,500/month depending on state requirements and physician availability in that market</li>
+                <li>Telemedicine physicians can serve as collaborators in many states — they do not need to be in the same physical location</li>
+                <li>Ensure the collaborating physician is licensed in the target state and that their malpractice covers the supervisory relationship. Tina (as owner) and Melani (as clinical provider) should both understand the scope and terms of the agreement.</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">CPA — Required Contents</div>
+              <ul class="proto-list">
+                <li>Scope of APRN practice authorized under the agreement</li>
+                <li>Prescribing authority — controlled and non-controlled</li>
+                <li>Formulary or medication categories covered</li>
+                <li>Consultation and referral protocols — when does the APRN escalate to the physician?</li>
+                <li>Chart review requirements — frequency, number of charts, documentation</li>
+                <li>Emergency protocols — physician availability and escalation pathway</li>
+                <li>Term and termination provisions — notice period required</li>
+                <li>Both parties' signatures, dates, and license numbers</li>
+              </ul>
+            </div>
+            <div class="warn-box" style="margin-top:1rem"><div class="note-label">CPA Risk Mitigation</div>
+              <div class="note-text">Never open a new site that requires a CPA without the agreement signed, dated, and filed before the first patient is seen. A lapsed or unsigned CPA means every prescription written is potentially unauthorized. Build a CPA renewal calendar with 90-day advance reminders. Have a backup collaborating physician identified in case of unexpected departure — one-physician dependency is a single point of failure for the entire practice.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §3 FINANCIAL PLANNING -->
+    <div class="section-block" id="s3">
+      <div class="section-header">
+        <div class="section-number">Section 03</div>
+        <h1><em>Financial</em> Planning<br>& Modeling</h1>
+        <p>Startup cost estimates, revenue modeling, cash flow projections, pricing structure, and break-even analysis for a new Valère site.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§3 · Financial Planning & Modeling</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s3-startup" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">💰</div>
+              <div><div class="card-title">Startup Cost Estimate</div>
+              <div class="card-subtitle">Pre-opening capital requirements by category</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="four-col" style="margin-bottom:1.5rem">
+              <div class="fin-card"><div class="fin-label">Lean Launch</div><div class="fin-value">$75K<em>–$120K</em></div><div class="fin-sub">Minimum buildout, leased equipment, solo provider + 1 staff, telehealth-first</div></div>
+              <div class="fin-card"><div class="fin-label">Standard Launch</div><div class="fin-value">$120K<em>–$200K</em></div><div class="fin-sub">Moderate buildout, owned core equipment, provider + MA + front desk</div></div>
+              <div class="fin-card"><div class="fin-label">Full Launch</div><div class="fin-value">$200K<em>–$350K</em></div><div class="fin-sub">Complete buildout, full equipment suite, IV infusion bay, 4+ staff</div></div>
+              <div class="fin-card"><div class="fin-label">Operating Reserve</div><div class="fin-value">6<em>–12 mo</em></div><div class="fin-sub">Months of operating costs held in reserve before opening — non-negotiable</div></div>
+            </div>
+            <div class="protocol-section">
+              <div class="proto-label">Startup Cost Breakdown</div>
+              <table class="proto-table">
+                <thead><tr><th>Category</th><th>Lean</th><th>Standard</th><th>Full</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Leasehold improvements / buildout</strong></td><td>$10K–$25K</td><td>$25K–$60K</td><td>$60K–$150K</td><td>Exam room plumbing, electrical, walls, flooring, lighting. Landlord TI allowance offsets this significantly — negotiate hard.</td></tr>
+                  <tr><td><strong>Medical equipment</strong></td><td>$8K–$15K</td><td>$15K–$35K</td><td>$35K–$75K</td><td>See full equipment list §4.4. Exam tables, body composition, BP cuffs, O₂, AED, glucometer, IV poles/pumps.</td></tr>
+                  <tr><td><strong>Furniture & fixtures</strong></td><td>$5K–$10K</td><td>$10K–$20K</td><td>$20K–$40K</td><td>Reception furniture, provider desks, exam chairs, patient seating, signage.</td></tr>
+                  <tr><td><strong>Technology / EHR setup</strong></td><td>$3K–$6K</td><td>$6K–$12K</td><td>$12K–$20K</td><td>Hardware (computers, iPads, printers, payment terminals), EHR implementation, telehealth platform setup.</td></tr>
+                  <tr><td><strong>Legal & professional fees</strong></td><td>$5K–$10K</td><td>$8K–$15K</td><td>$10K–$20K</td><td>Entity formation, CPA review, lease negotiation (attorney), HIPAA compliance setup, HR policies.</td></tr>
+                  <tr><td><strong>Licensing & credentialing</strong></td><td>$2K–$4K</td><td>$3K–$6K</td><td>$4K–$8K</td><td>State APRN license application fees, DEA registration ($888), NPI registration (free), state business registration.</td></tr>
+                  <tr><td><strong>Insurance — first year premiums</strong></td><td>$8K–$12K</td><td>$10K–$18K</td><td>$15K–$25K</td><td>Malpractice, general liability, workers' comp, property. Paid upfront or monthly depending on carrier.</td></tr>
+                  <tr><td><strong>Pharmacy / lab setup</strong></td><td>$1K–$3K</td><td>$2K–$5K</td><td>$3K–$8K</td><td>Compounding pharmacy account setup, initial lab draw supplies, specimen shipping accounts.</td></tr>
+                  <tr><td><strong>Marketing / pre-launch</strong></td><td>$5K–$10K</td><td>$10K–$20K</td><td>$20K–$40K</td><td>Website build/update, Google Ads launch budget, social media content creation, signage, print materials, grand opening event.</td></tr>
+                  <tr><td><strong>Initial supply inventory</strong></td><td>$3K–$6K</td><td>$5K–$10K</td><td>$8K–$15K</td><td>Emergency kit supplies, injection supplies, IV supplies, office supplies, PPE, lab draw supplies.</td></tr>
+                  <tr><td><strong>Working capital / operating reserve</strong></td><td>$25K–$40K</td><td>$40K–$80K</td><td>$80K–$150K</td><td>3 months payroll + fixed costs minimum. Target 6 months. This is the number most practices underestimate — do not cut here.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="s3-revenue" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📈</div>
+              <div><div class="card-title">Revenue Model</div>
+              <div class="card-subtitle">Service line revenue · Patient volume assumptions · Ramp projections</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Revenue Streams — Priority Order</div>
+              <table class="proto-table">
+                <thead><tr><th>Revenue Stream</th><th>Avg Ticket</th><th>Frequency</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>New patient consultations</strong></td><td>$350–$500</td><td>Per visit</td><td>Highest value per hour. Target 8–12 new patients per month in ramp phase. Grows to 15–25/month at maturity.</td></tr>
+                  <tr><td><strong>Follow-up visits (established)</strong></td><td>$200–$350</td><td>Avg 4x per patient per year</td><td>The recurring engine. 100 active patients × 4 visits × $250 avg = $100K/year baseline.</td></tr>
+                  <tr><td><strong>TRT / HRT monitoring visits</strong></td><td>$150–$250</td><td>Every 3–6 months</td><td>High volume, lower touch. Can stack efficiently — 6–8 in a half-day slot.</td></tr>
+                  <tr><td><strong>Testosterone pellet procedure</strong></td><td>$500–$900</td><td>Every 4–6 months per patient</td><td>High margin procedure. Once trained and efficient, 4–6 pellets per session is achievable. Revenue driver at scale.</td></tr>
+                  <tr><td><strong>IV infusion therapy</strong></td><td>$150–$400 per infusion</td><td>Variable — 1–4x/month per patient</td><td>High margin, low provider time. Requires IV infusion bay. Add after core hormone/peptide volume is established.</td></tr>
+                  <tr><td><strong>Fullscript supplement revenue</strong></td><td>$50–$200/month per patient</td><td>Monthly / recurring</td><td>Passive revenue. Typically 20–25% commission on patient purchases. Scales with active patient panel.</td></tr>
+                  <tr><td><strong>Lab draw fees (if drawing in-office)</strong></td><td>$30–$75 per draw</td><td>Per visit with draw</td><td>Revenue only if drawing in-office and billing for the service. Many practices refer out to LabCorp/Quest — no revenue but reduces liability and overhead.</td></tr>
+                  <tr><td><strong>Telehealth visits</strong></td><td>$175–$300</td><td>Per visit</td><td>Lower overhead than in-person. Can serve out-of-state patients. Strong revenue per provider hour when patient panel is established.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Revenue Ramp Projection — New Site</div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Month 1–3 · Ramp Phase</div>
+                  <div class="timeline-title">$8K–$20K/month</div>
+                  <div class="timeline-desc">5–15 new patients/month. Majority of revenue from new patient consultations and initial lab work. Operating at a loss — this is expected and planned for in working capital.</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Month 4–6 · Building Phase</div>
+                  <div class="timeline-title">$20K–$45K/month</div>
+                  <div class="timeline-desc">Follow-up visits from early patients begin generating recurring revenue. First pellet procedures. Fullscript orders building. Word-of-mouth referrals beginning.</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Month 7–12 · Stabilizing Phase</div>
+                  <div class="timeline-title">$45K–$80K/month</div>
+                  <div class="timeline-desc">Active patient panel of 80–150. Recurring follow-up visits represent 60%+ of revenue. Near or at break-even. IV infusion revenue starting to contribute.</div>
+                </div>
+                <div class="timeline-item future">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Month 13–24 · Maturity Phase</div>
+                  <div class="timeline-title">$80K–$150K+/month</div>
+                  <div class="timeline-desc">Active panel of 200–400 patients. Predictable recurring revenue base. Supplement and procedure revenue contributing significantly. Provider potentially at capacity — staffing decision point.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s3-cashflow" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">💸</div>
+              <div><div class="card-title">Cash Flow & Operating Costs</div>
+              <div class="card-subtitle">Monthly fixed costs · Variable costs · Payroll · Runway calculation</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Monthly Operating Cost Estimate</div>
+              <table class="proto-table">
+                <thead><tr><th>Cost Category</th><th>Lean Site</th><th>Standard Site</th><th>Full Site</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Rent (NNN)</strong></td><td>$2,500–$4,000</td><td>$4,000–$7,000</td><td>$7,000–$12,000</td><td>Highly variable by market. NNN means you also pay property taxes, building insurance, and CAM (common area maintenance) on top of base rent.</td></tr>
+                  <tr><td><strong>Payroll — provider (Melani / contracted APRN)</strong></td><td>$8,000–$12,000</td><td>$10,000–$18,000</td><td>$15,000–$25,000</td><td>Melani is an employed or contracted provider — not the owner. Budget as a payroll or contractor line item. Structure (W-2 vs. 1099) is a CPA and employment law decision. If hiring additional providers: $120K–$180K/year + benefits.</td></tr>
+                  <tr><td><strong>Payroll — support staff</strong></td><td>$3,500–$5,000</td><td>$6,000–$10,000</td><td>$12,000–$20,000</td><td>MA: $18–$24/hr. Front desk: $16–$22/hr. Add 25–30% for employer payroll taxes, benefits, and workers' comp.</td></tr>
+                  <tr><td><strong>Collaborative Practice Agreement physician fee</strong></td><td>$500–$1,000</td><td>$750–$1,500</td><td>$1,000–$2,500</td><td>Required in Florida and restricted-practice states for APRN prescribing authority. Not required in full-practice states. Budget regardless as clinical oversight/consultant fee even where not mandated.</td></tr>
+                  <tr><td><strong>EHR / software subscriptions</strong></td><td>$500–$1,000</td><td>$800–$1,500</td><td>$1,200–$2,500</td><td>Praxis EHR, telehealth platform, HIPAA-compliant messaging, scheduling, payment processing.</td></tr>
+                  <tr><td><strong>Lab draw supplies / CLIA</strong></td><td>$200–$500</td><td>$400–$800</td><td>$600–$1,200</td><td>If drawing in-office. If referring out — minimal cost. CLIA waiver certificate required if running any in-house testing.</td></tr>
+                  <tr><td><strong>Medical supplies / inventory</strong></td><td>$500–$1,000</td><td>$1,000–$2,000</td><td>$2,000–$4,000</td><td>Injection supplies, IV supplies, emergency kit restocking, PPE, gloves, specimen tubes.</td></tr>
+                  <tr><td><strong>Insurance (monthly)</strong></td><td>$700–$1,000</td><td>$900–$1,500</td><td>$1,200–$2,000</td><td>Malpractice + GL + workers' comp + property. If paid monthly rather than annually.</td></tr>
+                  <tr><td><strong>Marketing / advertising</strong></td><td>$1,000–$2,000</td><td>$2,000–$4,000</td><td>$3,000–$6,000</td><td>Google Ads, social media, SEO, email marketing. Reduce as referral network matures.</td></tr>
+                  <tr><td><strong>Utilities / phone / internet</strong></td><td>$400–$700</td><td>$600–$1,000</td><td>$800–$1,500</td><td>Medical office utility costs are higher than standard office due to equipment and lighting.</td></tr>
+                  <tr><td><strong>Accounting / bookkeeping</strong></td><td>$300–$600</td><td>$500–$1,000</td><td>$800–$1,500</td><td>Monthly bookkeeping + quarterly CPA review. Do not skip this — cash-pay practices need clean books for tax and business planning.</td></tr>
+                  <tr><td><strong>Miscellaneous / contingency (10%)</strong></td><td>$1,000–$1,500</td><td>$1,500–$2,500</td><td>$2,500–$5,000</td><td>Equipment repair, unexpected supplies, professional development, subscriptions, travel.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="note-box" style="margin-top:1.25rem"><div class="note-label">Runway Calculation</div>
+              <div class="note-text">Runway = (Starting Capital Reserve) ÷ (Monthly Burn Rate − Monthly Revenue). A standard site with $150K working capital, $22K/month burn rate, and $10K/month initial revenue has approximately 9 months of runway. Target 12 months minimum. If runway falls below 4 months before break-even is projected — reassess staffing, marketing spend, and pricing before capital runs out, not after.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s3-pricing" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🏷️</div>
+              <div><div class="card-title">Service Pricing Structure</div>
+              <div class="card-subtitle">Fee schedule · Membership options · Market-based adjustments</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Base Fee Schedule — Adjust ±20% by Market</div>
+              <table class="proto-table">
+                <thead><tr><th>Service</th><th>Suggested Price</th><th>Included</th><th>Market Adjustment</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>New patient consultation</strong></td><td>$400–$500</td><td>60–75 min visit, full intake review, lab interpretation, initial protocol design</td><td>Up in major metros (NYC, LA, Miami). Down in secondary markets. Price below competitors but above "discount" functional medicine.</td></tr>
+                  <tr><td><strong>Established follow-up — complex</strong></td><td>$250–$350</td><td>30–45 min, multi-system review, protocol adjustment</td><td>Standard across markets with minor adjustment</td></tr>
+                  <tr><td><strong>Established follow-up — standard</strong></td><td>$175–$250</td><td>20–30 min, single focus, stable patient</td><td>Standard</td></tr>
+                  <tr><td><strong>Lab review visit</strong></td><td>$150–$200</td><td>20 min dedicated lab interpretation</td><td>Can be offered via telehealth to reduce overhead</td></tr>
+                  <tr><td><strong>Testosterone pellet procedure</strong></td><td>$600–$900</td><td>Procedure fee only — pellet cost billed separately or bundled</td><td>Higher in affluent markets. Include post-procedure instructions and follow-up call in fee.</td></tr>
+                  <tr><td><strong>IV therapy — standard</strong></td><td>$175–$250</td><td>1-hour infusion, standard micronutrient protocol</td><td>$175 in price-sensitive markets, $250+ in premium positioning markets</td></tr>
+                  <tr><td><strong>IV therapy — premium / NAD+</strong></td><td>$300–$600</td><td>2–4 hour infusion, specialty compounds</td><td>NAD+ commands significant premium — patient education required on value</td></tr>
+                  <tr><td><strong>Telehealth visit</strong></td><td>$175–$300</td><td>Same as in-person equivalent — video visit</td><td>Telehealth visits typically priced 10–15% below in-person equivalent for market acceptance</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Membership Model — Optional But Recommended</div>
+              <div class="two-col">
+                <div class="info-block"><div class="info-label">Optimization Membership — ~$199/month</div><div class="info-val">Includes: 4 standard follow-up visits per year (or telehealth equivalent), 10% discount on procedures, priority scheduling, direct messaging access to provider, annual comprehensive lab panel. Ideal for established TRT / HRT patients on stable protocols.</div></div>
+                <div class="info-block"><div class="info-label">Premium Membership — ~$399/month</div><div class="info-val">Includes: unlimited standard visits (reasonable use), 15% discount on procedures and IV therapy, same-day telehealth access, quarterly comprehensive lab panel, personalized supplement protocol review semi-annually. Ideal for complex multi-system patients or executives.</div></div>
+              </div>
+              <div class="note-box" style="margin-top:1rem"><div class="note-label">Membership Model Benefits</div>
+                <div class="note-text">Predictable monthly revenue base reduces cash flow volatility. Higher patient retention and engagement. Simplifies scheduling — members book without hesitation. Calculate: 50 members at $199/month = $9,950/month in guaranteed recurring revenue before any visit fees. 100 members = $19,900/month base. Build toward this from day one.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s3-break" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📊</div>
+              <div><div class="card-title">Break-Even Analysis</div>
+              <div class="card-subtitle">When does the site cover its own costs?</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Break-Even Formula</div>
+              <div class="note-box"><div class="note-label">How to Calculate Your Break-Even</div>
+                <div class="note-text">Monthly Break-Even = Total Monthly Fixed Costs ÷ Gross Margin Per Visit
+
+Example — Standard Site:
+Fixed monthly costs: $22,000
+Average revenue per patient visit: $275
+Variable cost per visit (supplies, lab): $25
+Gross margin per visit: $250
+
+Break-Even visits per month: $22,000 ÷ $250 = 88 visits/month
+
+At 4 visits per patient per year: requires ~264 active patients to sustain.
+At 3 visits per week (conservative provider schedule): ~150 visits/month available.
+Break-even at 88 visits/month = 59% capacity utilization.</div>
+              </div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Break-Even Patient Panel Targets</div>
+              <table class="proto-table">
+                <thead><tr><th>Site Type</th><th>Monthly Fixed Costs</th><th>Break-Even Visits</th><th>Active Patients Needed</th><th>Typical Timeline</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Lean</strong></td><td>~$12,000/mo</td><td>~50 visits</td><td>~120–150 patients</td><td>Month 6–9</td></tr>
+                  <tr><td><strong>Standard</strong></td><td>~$22,000/mo</td><td>~88 visits</td><td>~220–260 patients</td><td>Month 9–15</td></tr>
+                  <tr><td><strong>Full</strong></td><td>~$38,000/mo</td><td>~150 visits</td><td>~380–450 patients</td><td>Month 15–24</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="warn-box" style="margin-top:1rem"><div class="note-label">The Most Common Financial Mistake</div>
+              <div class="note-text">Building out a full site (high fixed costs) before the patient panel can support it. Ramp by adding capacity — not front-loading it. Start lean. Add staff, space, and services as patient volume demonstrates demand. Every dollar of fixed cost added before revenue supports it extends your break-even timeline and increases your capital risk.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §4 SPACE & EQUIPMENT -->
+    <div class="section-block" id="s4">
+      <div class="section-header">
+        <div class="section-number">Section 04</div>
+        <h1>Space, <em>Equipment</em><br>& Buildout</h1>
+        <p>Lease negotiation, buildout requirements, design standards, and the complete equipment list for a Valère clinical site.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§4 · Space, Equipment & Buildout</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s4-space" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📐</div>
+              <div><div class="card-title">Space Requirements by Room</div>
+              <div class="card-subtitle">Minimum dimensions · Clinical requirements · ADA compliance</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <table class="proto-table">
+              <thead><tr><th>Room</th><th>Min Size</th><th>Must-Haves</th><th>Nice-to-Have</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Reception / Waiting</strong></td><td>150–300 sq ft</td><td>Check-in desk with privacy screen, seating for 4–6, coat hooks, visible signage</td><td>Refreshment station, branded feature wall, product display for supplements</td></tr>
+                <tr><td><strong>Exam Room (each)</strong></td><td>120–160 sq ft</td><td>Exam table, provider stool, side chair for patient companion, sink with hot water, locked medication cabinet, BP cuff mounted, sharps container</td><td>Body composition scale, dedicated lighting above exam table, digital display for patient education</td></tr>
+                <tr><td><strong>Provider Office / Consult</strong></td><td>100–150 sq ft</td><td>Desk, two chairs, computer with dual monitors, locked file storage, phone/video capability</td><td>Video consult setup (ring light, clean background), whiteboard for patient education</td></tr>
+                <tr><td><strong>MA / Clinical Work Area</strong></td><td>80–120 sq ft</td><td>Counter workspace, computer/charting station, supply storage, specimen handling area with sink</td><td>Refrigerator for specimens/medications, biohazard storage, separate entry to exam rooms</td></tr>
+                <tr><td><strong>IV Infusion Bay</strong></td><td>80 sq ft per chair</td><td>Recliner-style infusion chairs, IV pole, electrical outlets per chair, call system, privacy screening</td><td>Small refreshment station, entertainment (tablet or TV), dedicated MA station, peaceful lighting</td></tr>
+                <tr><td><strong>Clean Storage</strong></td><td>60–100 sq ft</td><td>Locked pharmaceutical storage (Schedule III-compliant), supply shelving, controlled environment</td><td>Separate from soiled storage, temperature monitoring for medications</td></tr>
+                <tr><td><strong>Restrooms</strong></td><td>ADA minimum</td><td>Patient restroom ADA compliant. Staff restroom separate if possible.</td><td>Bidet, neutral premium finishes consistent with brand</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="s4-lease" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📋</div>
+              <div><div class="card-title">Lease Negotiation Guide</div>
+              <div class="card-subtitle">What to ask for · What to never sign without · Red flags</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Non-Negotiable Lease Terms</div>
+              <ul class="proto-list">
+                <li><strong>Tenant Improvement (TI) allowance:</strong> Always negotiate. Standard is $20–$60/sq ft in most markets. Use to offset buildout costs. Get it in writing with a defined draw schedule.</li>
+                <li><strong>Permitted use clause:</strong> Must explicitly include "medical office," "clinical practice," "healthcare services," and ideally specific language about IV therapy and diagnostic services. A vague "professional office" clause can create problems.</li>
+                <li><strong>HVAC:</strong> Medical offices require better HVAC than standard commercial. Confirm system capacity handles clinical load. Negotiate new or upgraded HVAC as part of buildout.</li>
+                <li><strong>Plumbing:</strong> Confirm existing plumbing supports clinical sink placement in exam rooms. Adding plumbing is expensive — factor into buildout estimate before signing.</li>
+                <li><strong>Renewal options:</strong> 2–3 renewal options at defined rates give you stability and value. Without options, landlord can price you out at renewal.</li>
+                <li><strong>Termination clause:</strong> Healthcare businesses close — ensure you have a termination right with defined notice (90–180 days) and reasonable exit fee rather than full lease liability.</li>
+                <li><strong>Co-tenancy clause (if in medical building):</strong> If an anchor tenant (hospital, large practice) leaves the building, you may be able to reduce rent or exit. Worth negotiating in medical office parks.</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Red Flags — Do Not Sign Without Resolution</div>
+              <ul class="proto-list">
+                <li>Personal guaranty required beyond initial lease term — limits personal liability protection of the entity. If required, limit to initial lease term only and ensure it runs to the operating entity, not to Tina personally where possible.</li>
+                <li>No right to sublet or assign — critical if you sell the practice or need to bring in a partner</li>
+                <li>Exclusivity not granted — another hormone clinic could open in the same building</li>
+                <li>CAM charges uncapped — common area maintenance can inflate unpredictably; negotiate a cap</li>
+                <li>No force majeure provision — COVID taught every medical practice why this matters</li>
+                <li>Signage restrictions preventing exterior visibility — critical for foot traffic and brand awareness</li>
+              </ul>
+            </div>
+            <div class="note-box" style="margin-top:1rem"><div class="note-label">Always Use a Tenant Representative Broker</div>
+              <div class="note-text">Tenant rep brokers are paid by the landlord — they cost you nothing and represent your interests in negotiation. They know market rates, which landlords are flexible, and what TI is achievable. Using a tenant rep broker almost always results in better lease terms than negotiating directly. Ask for referrals from other medical practice owners in the market.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s4-buildout" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🔨</div>
+              <div><div class="card-title">Buildout & Design Standards</div>
+              <div class="card-subtitle">Valère design language · Contractor selection · Timeline</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Valère Design Language</div>
+              <div class="three-col">
+                <div class="info-block"><div class="info-label">Color Palette</div><div class="info-val">Deep Teal (#528489) as primary accent. Deep Navy (#006B8F) secondary. Cream/warm white walls. No sterile white — warm neutrals throughout. Gold or brushed brass hardware accents.</div></div>
+                <div class="info-block"><div class="info-label">Materials</div><div class="info-val">Luxury vinyl plank or polished concrete floors. Natural wood accents. Matte black or brushed nickel fixtures. No chrome. No laminate cabinetry — painted wood or thermofoil acceptable at minimum.</div></div>
+                <div class="info-block"><div class="info-label">Atmosphere</div><div class="info-val">Spa-adjacent, not clinical. Recessed lighting throughout — no fluorescent tubes. Artwork with nature/science themes. Plants if maintenance is feasible. Scent (light, clean) in reception.</div></div>
+              </div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Buildout Timeline</div>
+              <div class="phase-strip">
+                <div class="phase-item active"><div class="phase-num">Phase 1</div><div class="phase-label">Design & Permits</div><div class="phase-time">4–8 weeks</div></div>
+                <div class="phase-item"><div class="phase-num">Phase 2</div><div class="phase-label">Demolition & Rough-In</div><div class="phase-time">2–4 weeks</div></div>
+                <div class="phase-item"><div class="phase-num">Phase 3</div><div class="phase-label">Framing & MEP</div><div class="phase-time">3–5 weeks</div></div>
+                <div class="phase-item"><div class="phase-num">Phase 4</div><div class="phase-label">Finishes & Fixtures</div><div class="phase-time">3–4 weeks</div></div>
+                <div class="phase-item"><div class="phase-num">Phase 5</div><div class="phase-label">Equipment Install & CO</div><div class="phase-time">2–3 weeks</div></div>
+              </div>
+              <div class="note-box" style="margin-top:1rem"><div class="note-label">Total Buildout Timeline</div>
+                <div class="note-text">Plan for 14–24 weeks from lease signing to Certificate of Occupancy. Permitting is the most unpredictable step — municipalities vary enormously. Medical office permits often require additional inspections (plumbing, electrical, accessibility). Add 2–4 weeks as buffer. Never open a site without a Certificate of Occupancy — doing so creates legal and insurance liability.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s4-equipment" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🩺</div>
+              <div><div class="card-title">Complete Equipment List</div>
+              <div class="card-subtitle">Clinical · Administrative · Emergency · IV Infusion</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="two-col">
+              <div>
+                <div class="proto-label">Clinical Equipment — Per Exam Room</div>
+                <ul class="proto-list">
+                  <li>Exam table with electric adjustment (preferred) or manual — Midmark or equiv.</li>
+                  <li>Rolling provider stool</li>
+                  <li>Wall-mounted otoscope/ophthalmoscope (optional for this specialty but useful)</li>
+                  <li>Mounted BP cuff (digital, validated) — Omron 907XL or equiv.</li>
+                  <li>Pulse oximeter</li>
+                  <li>Sharps container (wall-mounted)</li>
+                  <li>Biohazard waste container</li>
+                  <li>Mounted hand sanitizer dispenser</li>
+                  <li>Exam light / procedure light</li>
+                  <li>Locked medication storage cabinet</li>
+                  <li>Computer terminal or iPad for charting</li>
+                </ul>
+              </div>
+              <div>
+                <div class="proto-label">Clinical Equipment — Shared / Practice-Wide</div>
+                <ul class="proto-list">
+                  <li>Body composition scale (InBody 570 or equiv.) — major diagnostic tool</li>
+                  <li>AED (automated external defibrillator) — Zoll or Philips — post location prominently</li>
+                  <li>Supplemental oxygen tank with regulator, non-rebreather mask, nasal cannula</li>
+                  <li>Emergency kit (fully stocked — see The Valère Signal §12)</li>
+                  <li>Centrifuge (if spinning specimens in-office)</li>
+                  <li>Specimen refrigerator (dedicated, not food-sharing)</li>
+                  <li>Lab draw supplies: tourniquets, butterfly needles, vacutainer tubes, alcohol swabs, bandages, specimen labels</li>
+                  <li>Glucometer with strips (quality control solution, lancets)</li>
+                  <li>Pellet insertion tray and trocar set (for pellet procedures)</li>
+                  <li>Minor procedure tray (sterile field setup supplies)</li>
+                  <li>Autoclave or sterile supply vendor relationship</li>
+                </ul>
+              </div>
+            </div>
+            <div class="two-col" style="margin-top:1.25rem">
+              <div>
+                <div class="proto-label">IV Infusion Equipment (if applicable)</div>
+                <ul class="proto-list">
+                  <li>Infusion recliners (medical grade) — 1–4 chairs depending on bay size</li>
+                  <li>IV poles (adjustable, with hook capacity)</li>
+                  <li>IV infusion pumps (if using programmable infusion — not required for gravity drip)</li>
+                  <li>Armboards and infusion towels</li>
+                  <li>IV start supplies: 20G/22G IV catheters, tubing, extension sets, alcohol swabs, tegaderm, tape</li>
+                  <li>IV fluid storage (room temperature or refrigerated per additive requirements)</li>
+                  <li>Infusion chair call system or patient alert button</li>
+                </ul>
+              </div>
+              <div>
+                <div class="proto-label">Administrative & Technology Equipment</div>
+                <ul class="proto-list">
+                  <li>Front desk computers (2 minimum) — all encrypted</li>
+                  <li>Provider workstation computer with dual monitors</li>
+                  <li>iPad(s) for patient intake forms and patient-facing content</li>
+                  <li>High-speed internet — dedicated medical-grade router, no shared commercial ISP</li>
+                  <li>Multi-function printer/scanner (HIPAA-compliant with hard drive wipe)</li>
+                  <li>Credit card terminal with contactless payment capability</li>
+                  <li>HIPAA-compliant phone system with secure voicemail</li>
+                  <li>Security camera system (reception and entry — not clinical areas)</li>
+                  <li>Electronic door lock system for after-hours access control</li>
+                  <li>Shredder (cross-cut, for PHI document destruction)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §5 VENDOR & TECH -->
+    <div class="section-block" id="s5">
+      <div class="section-header">
+        <div class="section-number">Section 05</div>
+        <h1><em>Vendor</em> &<br>Tech Stack Setup</h1>
+        <p>EHR configuration, pharmacy relationships, lab accounts, Fullscript setup, and the complete technology stack for a new Valère site.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§5 · Vendor & Tech Stack Setup</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s5-ehr" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">💻</div>
+              <div><div class="card-title">EHR Configuration</div>
+              <div class="card-subtitle">Praxis setup · New site configuration · EPCS · Telehealth integration</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">New Site EHR Setup Checklist</div>
+              <ul class="proto-list numbered">
+                <li>Add new site address to Praxis account — confirm with Praxis support whether this requires a new license or is included in existing</li>
+                <li>Configure new site location in EHR — address, phone, fax, NPI (Type 2 for new entity)</li>
+                <li>Set up new DEA number in EPCS module once DEA registration received for new site</li>
+                <li>Configure PDMP integration for new state — most states have EHR integration via Appriss Health or state-specific portal</li>
+                <li>Set up new lab ordering accounts — add Quest or LabCorp ordering to new location</li>
+                <li>Configure telehealth — ensure video platform BAA covers new site and new state patients</li>
+                <li>Set up staff access — new MA and front desk accounts with role-appropriate permissions</li>
+                <li>Load Valère note templates and protocol documentation into new site configuration</li>
+                <li>Configure Fullscript integration — link new site to Fullscript dispensary</li>
+                <li>Test end-to-end workflow: schedule → chart → prescribe → send to pharmacy → bill patient</li>
+              </ul>
+            </div>
+            <div class="note-box" style="margin-top:1rem"><div class="note-label">EPCS Configuration Is Critical Path</div>
+              <div class="note-text">Electronic prescribing for controlled substances (EPCS) requires: (1) DEA registration for the new site/state, (2) identity proofing of the provider (typically done once but may need re-verification for new site), (3) EPCS module configured with the correct DEA number for the new location. Without EPCS, you cannot legally e-prescribe testosterone and other controlled substances in most states. Do not open a new site before EPCS is confirmed working — test with a non-urgent prescription before opening day.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s5-pharmacy" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">⚗️</div>
+              <div><div class="card-title">Compounding Pharmacy Relationships</div>
+              <div class="card-subtitle">State-specific requirements · Vetting · Ordering setup</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Pharmacy Setup by State</div>
+              <div class="note-box"><div class="note-label">State Pharmacy Licensing</div>
+                <div class="note-text">A compounding pharmacy must be licensed to ship into the state where your patient is located — not just the state where you are practicing. Verify that your existing compounding pharmacy partners hold a non-resident pharmacy permit in each new state you are expanding into. If not, identify a pharmacy that does. This is the most commonly overlooked step in telehealth expansion and new site opening.</div>
+              </div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Pharmacy Setup Checklist — New Site</div>
+              <ul class="proto-list numbered">
+                <li>Confirm existing pharmacy partners hold non-resident permit in target state</li>
+                <li>If not — research 503A compounding pharmacies licensed in target state (search NABP database)</li>
+                <li>Vet any new pharmacy per the checklist in The Valère Signal §13.4</li>
+                <li>Complete provider account setup — W-9, DEA certificate (new site), state APRN license copy</li>
+                <li>Establish ordering portal access and test with a non-patient order</li>
+                <li>Confirm COA (Certificate of Analysis) availability for all compounds you intend to prescribe</li>
+                <li>Set up patient-direct ship to patient's address in target state — confirm this is permitted and pharmacy does it</li>
+                <li>Negotiate pricing — volume commitments across Tallahassee + new site may unlock better rates</li>
+                <li>Establish communication channel with pharmacy's clinical pharmacist for consult questions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s5-lab" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🧪</div>
+              <div><div class="card-title">Lab Account Setup</div>
+              <div class="card-subtitle">Quest · LabCorp · Specialty labs · In-office CLIA</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Lab Setup Checklist</div>
+              <ul class="proto-list numbered">
+                <li><strong>Quest Diagnostics or LabCorp account:</strong> Apply for a new provider account using new site NPI, address, and DEA number. Each physical location requires its own account in most cases.</li>
+                <li><strong>Standing order account:</strong> Set up standing order capability for your most common panels (hormone panel, metabolic panel, thyroid panel, cardiometabolic panel) — saves time on each order.</li>
+                <li><strong>Patient self-pay pricing:</strong> Quest and LabCorp offer patient self-pay (cash-pay) pricing — typically 30–60% below list price. Register your practice for this program so patients can use it without insurance.</li>
+                <li><strong>Specialty labs:</strong> Dutch Test (hormone metabolite), Vibrant Wellness, Genova Diagnostics, or similar specialty labs — set up accounts directly with each company using provider credentials.</li>
+                <li><strong>CLIA waiver (if drawing in-office):</strong> Certificate for Laboratory Improvement Amendments waiver — required if running any in-house testing (glucose, urinalysis, rapid strep, etc.). Apply through CMS. Takes 2–4 weeks. Annual fee ~$150. Not required if you send all specimens to reference labs.</li>
+                <li><strong>Specimen shipping accounts:</strong> If drawing in-office and shipping specimens — FedEx or UPS Medical account for temperature-controlled specimen shipping.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s5-supplement" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🌿</div>
+              <div><div class="card-title">Fullscript Dispensary Setup</div>
+              <div class="card-subtitle">New site configuration · Patient access · Revenue tracking</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="proto-text" style="margin-bottom:1.25rem">Fullscript ships to patients in all US states from a single practitioner account. A new physical site does not require a separate Fullscript account — you can serve new-state patients from your existing dispensary. What needs to be set up is the intake flow and patient onboarding for the new site's patient population.</div>
+            <div class="protocol-section">
+              <div class="proto-label">Fullscript New Site Configuration</div>
+              <ul class="proto-list">
+                <li>Update practice profile — add new site address and contact information if Fullscript has a single-site display</li>
+                <li>Create site-specific supplement protocols / catalog sections if you are differentiating protocols by site</li>
+                <li>Train new site staff on patient invite process — every new patient should receive a Fullscript invite at or before their first visit</li>
+                <li>Set patient discount tier — Valère standard is typically 10–15% patient discount (you absorb this from the 25–35% practitioner margin)</li>
+                <li>Review Fullscript tax obligations — some states have different supplement sales tax rules for dispensing practitioners</li>
+                <li>Track revenue by patient — Fullscript dashboard shows order history; incorporate into monthly financial review</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s5-tech" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🔧</div>
+              <div><div class="card-title">Complete Technology Stack</div>
+              <div class="card-subtitle">Every tool the practice runs on — category by category</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <table class="proto-table">
+              <thead><tr><th>Category</th><th>Recommended Tool</th><th>Purpose</th><th>HIPAA BAA</th></tr></thead>
+              <tbody>
+                <tr><td><strong>EHR / Practice Management</strong></td><td>Praxis EMR</td><td>Clinical documentation, scheduling, e-prescribing, EPCS</td><td><span class="badge badge-green">Required / Available</span></td></tr>
+                <tr><td><strong>Telehealth Platform</strong></td><td>Doxy.me (or Zoom for Healthcare)</td><td>Video visits, screen sharing for lab review</td><td><span class="badge badge-green">Required / Available</span></td></tr>
+                <tr><td><strong>Patient Messaging</strong></td><td>Spruce Health or OhMD</td><td>HIPAA-compliant text, phone, and portal messaging</td><td><span class="badge badge-green">Required / Available</span></td></tr>
+                <tr><td><strong>Online Scheduling</strong></td><td>Acuity, Jane App, or integrated EHR</td><td>Patient self-scheduling, appointment reminders</td><td><span class="badge badge-green">Required / Available</span></td></tr>
+                <tr><td><strong>Payment Processing</strong></td><td>Stripe + Spruce billing, or Square for Health</td><td>Card on file, invoicing, superbill generation</td><td><span class="badge badge-green">Required / Available</span></td></tr>
+                <tr><td><strong>Supplement Dispensing</strong></td><td>Fullscript</td><td>Practitioner-grade supplement dispensary with patient access</td><td><span class="badge badge-green">Required / Available</span></td></tr>
+                <tr><td><strong>PDMP Access</strong></td><td>State-specific (E-FORCSE in FL)</td><td>Prescription drug monitoring — legally required before CS prescribing</td><td><span class="badge badge-navy">Government portal</span></td></tr>
+                <tr><td><strong>Accounting</strong></td><td>QuickBooks Online</td><td>Bookkeeping, payroll integration, CPA access</td><td><span class="badge badge-amber">Not PHI — standard</span></td></tr>
+                <tr><td><strong>HR / Payroll</strong></td><td>Gusto or ADP Run</td><td>Payroll processing, W-2/1099, benefits administration, PTO tracking</td><td><span class="badge badge-amber">BAA not required</span></td></tr>
+                <tr><td><strong>Email / Calendar</strong></td><td>Microsoft 365 Business (BAA available)</td><td>Staff email, shared calendar, Teams for internal communication</td><td><span class="badge badge-green">Available — must request</span></td></tr>
+                <tr><td><strong>E-Signatures / Consents</strong></td><td>DocuSign (HIPAA plan) or Adobe Sign</td><td>Consent forms, patient agreements, staff agreements</td><td><span class="badge badge-green">Required for patient docs</span></td></tr>
+                <tr><td><strong>Password Management</strong></td><td>1Password Teams</td><td>Secure shared credential management for staff</td><td><span class="badge badge-amber">Enforce as policy</span></td></tr>
+                <tr><td><strong>Website / SEO</strong></td><td>WordPress + Yoast (or Squarespace Health)</td><td>Public website, SEO, booking integration</td><td><span class="badge badge-amber">No PHI on website</span></td></tr>
+                <tr><td><strong>Social Media Management</strong></td><td>Buffer or Later</td><td>Scheduled posting for Instagram, Facebook — no PHI</td><td><span class="badge badge-amber">No PHI — standard</span></td></tr>
+                <tr><td><strong>Email Marketing</strong></td><td>Klaviyo or Mailchimp (HIPAA variant)</td><td>Patient newsletter, re-engagement, educational content</td><td><span class="badge badge-green">Use HIPAA-compliant variant</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §6 HIRING -->
+    <div class="section-block" id="s6">
+      <div class="section-header">
+        <div class="section-number">Section 06</div>
+        <h1><em>Hiring</em> &<br>Staffing</h1>
+        <p>Staffing model by growth phase, hiring process, compensation structure, and HR essentials for a new Valère site.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§6 · Hiring & Staffing</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s6-model" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">👥</div>
+              <div><div class="card-title">Staffing Model by Phase</div>
+              <div class="card-subtitle">Who to hire when — and in what order</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="phase-strip">
+              <div class="phase-item active"><div class="phase-num">Phase 1</div><div class="phase-label">Pre-Open to Month 3</div><div class="phase-time">Lean team</div></div>
+              <div class="phase-item"><div class="phase-num">Phase 2</div><div class="phase-label">Month 4–9</div><div class="phase-time">Building</div></div>
+              <div class="phase-item"><div class="phase-num">Phase 3</div><div class="phase-label">Month 10–18</div><div class="phase-time">Stabilizing</div></div>
+              <div class="phase-item"><div class="phase-num">Phase 4</div><div class="phase-label">Month 18+</div><div class="phase-time">Scale</div></div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Phase 1 — Minimum Viable Team</div>
+              <table class="proto-table">
+                <thead><tr><th>Role</th><th>FT/PT</th><th>Priority</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Provider (APRN)</strong></td><td>FT or part-time launch</td><td>Critical — hire first</td><td>If Melani is the provider, budget her time fully for patient care. No admin duties in clinical hours.</td></tr>
+                  <tr><td><strong>Medical Assistant</strong></td><td>FT</td><td>Critical — hire 4 weeks before opening</td><td>Needs 4 weeks for full orientation (The Valère Signal §14.2). Hire before space is ready.</td></tr>
+                  <tr><td><strong>Front Desk / Patient Coordinator</strong></td><td>FT or PT</td><td>High</td><td>Can start PT (20–25 hrs) and ramp to FT as volume grows. Alternatively, MA covers both initially in lean launch.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Phase 2–4 — Addition Triggers</div>
+              <ul class="proto-list">
+                <li><strong>Second MA:</strong> Add when provider is seeing 15+ patients/week consistently and first MA is at capacity for rooming and clinical support</li>
+                <li><strong>Practice Manager:</strong> Add when site has 150+ active patients and daily operations require coordination beyond what Melani can manage alongside clinical care. Typically Month 9–15.</li>
+                <li><strong>Second Provider:</strong> Add when Melani's schedule is 80%+ booked 4+ weeks out consistently. This is the highest-leverage hire and requires the most vetting — clinical quality must match Valère standards exactly.</li>
+                <li><strong>IV Nurse / RN:</strong> Add when IV infusion bay is being added and volume justifies a dedicated infusion nurse. RN or LPN typically required for independent IV administration depending on state scope rules.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s6-hire" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🔍</div>
+              <div><div class="card-title">Hiring Process</div>
+              <div class="card-subtitle">Job posting · Screening · Interview · Reference · Offer</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Where to Post Jobs</div>
+              <ul class="proto-list">
+                <li><strong>Indeed / LinkedIn:</strong> Highest volume for MA and front desk roles. Set up employer account with Valère branding before posting.</li>
+                <li><strong>Local MA programs:</strong> Contact program directors at community colleges and technical schools in target market — externship-to-hire is an efficient pipeline.</li>
+                <li><strong>State nursing board / APRN association:</strong> For provider hiring — post on state APRN association job board and IFM job board for functional medicine-aligned candidates.</li>
+                <li><strong>Internal network:</strong> Best hires often come through referrals. Post in functional medicine Facebook groups, local healthcare professional networks.</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Interview Process — MA and Front Desk</div>
+              <ul class="proto-list numbered">
+                <li><strong>Phone screen (15 min):</strong> Confirm availability, compensation expectation, basic experience. Screen out obvious mismatches before investing time.</li>
+                <li><strong>In-person or video interview (45–60 min):</strong> Walk through experience, clinical skills (MA), patient interaction style. Include a scenario question: "A patient calls and says their testosterone injection site is red and swollen. What do you do?"</li>
+                <li><strong>Working interview (2–3 hours, paid):</strong> See how they interact with staff, handle the front desk, or support a clinical session. The most informative step — culture fit and practical skills reveal themselves quickly.</li>
+                <li><strong>Reference check (2 professional):</strong> Always. Ask specifically about reliability, patient interaction, and how they handle stressful situations. "Would you rehire them?" is the most predictive question.</li>
+                <li><strong>Offer:</strong> Verbal first, then written within 24 hours. Include start date, compensation, schedule, and brief overview of benefits.</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Interview Questions That Reveal Fit</div>
+              <ul class="proto-list">
+                <li>"Tell me about a time a patient was frustrated or upset. What happened and what did you do?" — Reveals composure and patient orientation.</li>
+                <li>"What does 'good patient care' look like to you in a support role?" — Reveals whether they see themselves as supporting the patient or supporting the provider.</li>
+                <li>"What would you do if a patient asked you a question about their lab results and you didn't know the answer?" — Should always answer: get the provider. Any other answer is a red flag.</li>
+                <li>"Tell me about a time you made a mistake at work and how you handled it." — Reveals self-awareness and accountability.</li>
+                <li>"What interests you about functional medicine or hormone optimization?" — Genuine curiosity matters. Patients feel it when staff are indifferent to the mission.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s6-comp" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">💳</div>
+              <div><div class="card-title">Compensation Structure</div>
+              <div class="card-subtitle">Market rates · Benefits · Performance incentives · Provider compensation</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Market Rate Ranges by Role (2026)</div>
+              <table class="proto-table">
+                <thead><tr><th>Role</th><th>Annual Salary Range</th><th>Hourly Range</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>APRN / FNP (employed)</strong></td><td>$110K–$160K</td><td>$55–$80/hr</td><td>Functional medicine / hormone optimization specialty commands a premium. Productivity bonus on top of base is standard in cash-pay practices.</td></tr>
+                  <tr><td><strong>RN (clinical / IV nurse)</strong></td><td>$65K–$90K</td><td>$30–$45/hr</td><td>Rates vary significantly by market. ICU/procedural experience preferred for IV therapy role.</td></tr>
+                  <tr><td><strong>Medical Assistant — certified</strong></td><td>$38K–$52K</td><td>$18–$25/hr</td><td>CMA (AAMA) or RMA (AMT) credential commands higher rate. Functional medicine experience rare — train internally.</td></tr>
+                  <tr><td><strong>Front Desk / Patient Coordinator</strong></td><td>$35K–$48K</td><td>$17–$23/hr</td><td>Premium for experience with cash-pay medical practices or high-end healthcare environments.</td></tr>
+                  <tr><td><strong>Practice Manager</strong></td><td>$55K–$80K</td><td>$26–$38/hr</td><td>Healthcare office management experience required. Functional medicine background a significant plus.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Benefits Package — Minimum to Be Competitive</div>
+              <div class="three-col">
+                <div class="info-block"><div class="info-label">Must Offer</div><ul class="proto-list" style="margin-top:0.25rem"><li>Paid time off (10–15 days to start)</li><li>Paid holidays (major federal holidays minimum)</li><li>Workers' compensation (legally required)</li><li>FMLA compliance (if 50+ employees — verify threshold)</li></ul></div>
+                <div class="info-block"><div class="info-label">Strongly Recommended</div><ul class="proto-list" style="margin-top:0.25rem"><li>Health insurance contribution (50%+ employer contribution is market standard)</li><li>Dental and vision insurance</li><li>Professional development budget ($500–$1,500/year)</li><li>Fullscript employee discount on supplements</li></ul></div>
+                <div class="info-block"><div class="info-label">Performance Incentives</div><ul class="proto-list" style="margin-top:0.25rem"><li>Quarterly bonus tied to practice KPIs (new patient volume, retention rate, patient satisfaction)</li><li>APRN: productivity bonus above base visit volume</li><li>Annual merit increase (3–5% for meeting expectations)</li></ul></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s6-hr" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📁</div>
+              <div><div class="card-title">HR & Employment Essentials</div>
+              <div class="card-subtitle">Documents · Compliance · Handbooks · Termination</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Required Documents — Every New Hire</div>
+              <ul class="proto-list">
+                <li><strong>I-9 (Employment Eligibility Verification):</strong> Completed within 3 business days of hire. You must physically examine identity documents — cannot be done remotely unless using an authorized remote agent.</li>
+                <li><strong>W-4 (Federal Tax Withholding):</strong> Completed on or before first day. Also complete applicable state withholding forms.</li>
+                <li><strong>Offer letter / employment agreement:</strong> Signed copy on file. Include: title, start date, compensation, schedule, at-will statement, and confidentiality acknowledgment.</li>
+                <li><strong>HIPAA training attestation:</strong> Completed and signed before any PHI access (see The Valère Signal §14.5).</li>
+                <li><strong>Employee handbook receipt:</strong> Signed acknowledgment that handbook was received and read.</li>
+                <li><strong>Confidentiality / NDA agreement:</strong> Covers patient information, practice protocols, business information, and competitive restrictions.</li>
+                <li><strong>Background check authorization and results:</strong> Healthcare workers should be screened against OIG exclusion list and state healthcare sanctions list in addition to standard criminal background check.</li>
+              </ul>
+            </div>
+            <div class="warn-box" style="margin-top:1rem"><div class="note-label">At-Will Employment — But Document Everything</div>
+              <div class="note-text">Most states are at-will — you can terminate without cause. But always document performance issues, attendance problems, policy violations, and corrective conversations in writing — even informally. "He said / she said" without documentation creates unemployment and wrongful termination exposure even in at-will states. Every verbal correction should be followed by a written summary email within 24 hours. Every formal write-up should be signed by the employee and filed.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §7 MARKETING -->
+    <div class="section-block" id="s7">
+      <div class="section-header">
+        <div class="section-number">Section 07</div>
+        <h1><em>Marketing</em> &<br>Pre-Launch</h1>
+        <p>Brand deployment, digital presence, referral network development, and the pre-launch campaign that fills your schedule before you open the doors.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§7 · Marketing & Pre-Launch</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s7-brand" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">✨</div>
+              <div><div class="card-title">Brand Deployment Checklist</div>
+              <div class="card-subtitle">Everything the brand touches in a new market</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="two-col">
+              <div>
+                <div class="proto-label">Physical Brand Touchpoints</div>
+                <ul class="proto-list">
+                  <li>Exterior signage — building sign and suite sign meeting landlord and local sign code requirements</li>
+                  <li>Interior wayfinding signage — door sign, reception display, room identifiers</li>
+                  <li>Branded reception area — logo wall, color palette, brand-consistent furnishings</li>
+                  <li>Patient-facing materials — intake forms on branded letterhead, welcome packet</li>
+                  <li>Branded name badges for all staff — consistent format with Valère logo</li>
+                  <li>Business cards — Melani + any key staff, updated with new site address</li>
+                  <li>Branded white coat or clinical attire — consistent provider presentation</li>
+                  <li>Window graphics (if permitted by landlord) — teal accent, practice name visible from outside</li>
+                </ul>
+              </div>
+              <div>
+                <div class="proto-label">Digital Brand Touchpoints</div>
+                <ul class="proto-list">
+                  <li>Website — new location page added (city name, address, phone, hours, Google Map embed)</li>
+                  <li>Google Business Profile — create or claim for new address, verify listing, add photos before opening</li>
+                  <li>Apple Maps and Bing Places — claim listings for new address</li>
+                  <li>Social media — update bio/location to include new site or create location-specific accounts</li>
+                  <li>Healthgrades and Zocdoc profiles — update with new location</li>
+                  <li>Email signature — all staff email signatures updated with new site information</li>
+                  <li>Voicemail — professional greeting recorded before first patient call</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s7-digital" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📱</div>
+              <div><div class="card-title">Digital Presence & Lead Generation</div>
+              <div class="card-subtitle">Google Ads · SEO · Social · Email · Review strategy</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Priority Channels by Timeline</div>
+              <table class="proto-table">
+                <thead><tr><th>Channel</th><th>Start When</th><th>Monthly Budget</th><th>Expected Result</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Google Business Profile (free)</strong></td><td>90 days pre-opening</td><td>$0</td><td>Shows in local map pack for branded searches. Essential and free — do this first.</td></tr>
+                  <tr><td><strong>Google Search Ads (PPC)</strong></td><td>60 days pre-opening</td><td>$1,500–$3,000/mo</td><td>Fastest way to drive new patient inquiries. Target: "testosterone therapy [city]", "hormone doctor [city]", "functional medicine [city]". Track phone calls and form fills as conversions.</td></tr>
+                  <tr><td><strong>Local SEO</strong></td><td>90 days pre-opening</td><td>$500–$1,500/mo (agency) or internal</td><td>3–6 month lag before results appear. Invest early. Focus: Google Business optimization, local citations, location-specific content.</td></tr>
+                  <tr><td><strong>Instagram / Facebook</strong></td><td>60 days pre-opening</td><td>$500–$1,000/mo ads</td><td>Brand awareness and retargeting for website visitors. Educational content drives organic reach. Patient testimonials (with consent) are highest performing content.</td></tr>
+                  <tr><td><strong>Email marketing</strong></td><td>At opening or with waitlist</td><td>$100–$300/mo (tool)</td><td>Build a waitlist before opening — email subscribers convert at significantly higher rates than cold web traffic. Launch with 50+ subscribers if possible.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Review Strategy — The First 90 Days</div>
+              <ul class="proto-list">
+                <li>Google reviews are the single most important credibility signal for a new practice — target 20+ reviews in the first 90 days</li>
+                <li>Build review request into the visit workflow: after every positive patient encounter, the MA or front desk mentions "We'd really appreciate a Google review if you have a moment — it helps other patients find us"</li>
+                <li>Send automated follow-up via Spruce or email 24–48 hours after visit with a direct Google review link</li>
+                <li>Never incentivize reviews — violates Google policy and FTC rules</li>
+                <li>Respond to every review (positive and negative) within 48 hours — this is visible to all potential patients and signals responsiveness</li>
+                <li>Do not respond to negative reviews with clinical information — HIPAA. Instead: "Thank you for sharing this feedback. We take patient experience seriously and would like to speak with you directly. Please contact our office at [phone]."</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s7-referral" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🤝</div>
+              <div><div class="card-title">Referral Network Development</div>
+              <div class="card-subtitle">Physician outreach · Strategic partnerships · Community presence</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Priority Referral Sources</div>
+              <div class="three-col">
+                <div class="info-block"><div class="info-label">Tier 1 — Highest Volume Potential</div><ul class="proto-list" style="margin-top:0.25rem"><li>OBGYNs and gynecologists — hot menopause referrals</li><li>Urologists — male hypogonadism, ED patients</li><li>Primary care / internists — fatigue, metabolic patients who want more than standard care</li><li>Endocrinologists — overflow / optimization patients they don't have time for</li></ul></div>
+                <div class="info-block"><div class="info-label">Tier 2 — Consistent Volume</div><ul class="proto-list" style="margin-top:0.25rem"><li>Psychiatrists / therapists — patients on SSRIs with unresolved fatigue or libido concerns</li><li>Cardiologists — metabolic syndrome patients wanting lifestyle + optimization approach</li><li>Orthopedic surgeons — post-surgical recovery patients (peptide therapy)</li><li>Chiropractors / physical therapists — pain and recovery patients</li></ul></div>
+                <div class="info-block"><div class="info-label">Tier 3 — Brand Alignment</div><ul class="proto-list" style="margin-top:0.25rem"><li>Functional nutritionists / dietitians — shared patient population</li><li>Personal trainers and gym owners — body composition, performance patients</li><li>Integrative / naturopathic practitioners — collaborative care model</li><li>Corporate wellness programs — employee optimization</li></ul></div>
+              </div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Physician Outreach Process</div>
+              <ul class="proto-list numbered">
+                <li>Build a list of 30–50 target providers in the market using Google Maps, Healthgrades, and the state medical board directory</li>
+                <li>Send a brief, professional introduction letter or email — explain what Valère does, what you don't do (not replacing their care), and what patients can expect when referred</li>
+                <li>Follow up with an office drop-by — bring a leave-behind that includes the Valère card, a brief one-page practice overview, and your direct contact number</li>
+                <li>Offer to present a 20-minute lunch-and-learn on hormone optimization or functional medicine at their office — free CE or educational content is a door-opener</li>
+                <li>When you receive a referral: send a co-management note back to the referring provider within 2 weeks — professional, complete, non-clinical lecture. This is the fastest way to get repeat referrals.</li>
+                <li>Track referrals in a simple spreadsheet — source, date, patient (de-identified), outcome. Referral source data informs where to invest relationship-building time.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s7-launch" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🚀</div>
+              <div><div class="card-title">Pre-Launch Campaign</div>
+              <div class="card-subtitle">Waitlist building · Grand opening · First 30 days patient acquisition</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Pre-Launch Timeline — 90 Days Before Opening</div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Day 90 — Announce</div>
+                  <div class="timeline-title">Coming Soon Campaign</div>
+                  <div class="timeline-desc">Activate social media for the new location. Google Business Profile "coming soon" status. Email to existing patient list announcing new site opening with waitlist link.</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Day 60 — Build</div>
+                  <div class="timeline-title">Google Ads Live + Referral Outreach</div>
+                  <div class="timeline-desc">Launch Google Search Ads targeting new market. Begin physician office outreach with introductory letters. Content posting begins — 3x/week minimum on Instagram/Facebook for new location.</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Day 30 — Convert</div>
+                  <div class="timeline-title">Waitlist to Appointments</div>
+                  <div class="timeline-desc">Contact waitlist with opening date and scheduling link. Priority booking for waitlist members. First appointments confirmed. Front desk trained and ready. EHR live and tested.</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Opening Week</div>
+                  <div class="timeline-title">Grand Opening + Media</div>
+                  <div class="timeline-desc">Soft open first 3 days (referral partners and waitlist only). Grand opening event Day 4 — invite referring physicians, media, community. Press release to local health/lifestyle media. Photo content for 30 days of social posts.</div>
+                </div>
+                <div class="timeline-item future">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Day 30 Post-Open — Review</div>
+                  <div class="timeline-title">Performance Assessment</div>
+                  <div class="timeline-desc">Review: new patient volume vs. projection, conversion rate from inquiry to booking, Google review count, ad performance (cost per lead), top referral sources. Adjust spend and strategy based on what's actually working.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §8 OPENING DAY -->
+    <div class="section-block" id="s8">
+      <div class="section-header">
+        <div class="section-number">Section 08</div>
+        <h1>Opening <em>Day</em> &<br>First 90 Days</h1>
+        <p>Pre-opening checklist, opening day protocol, first 90-day milestone targets, and the KPIs that tell you if the site is on track.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§8 · Opening Day & First 90 Days</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s8-pre" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">✅</div>
+              <div><div class="card-title">Pre-Opening Master Checklist</div>
+              <div class="card-subtitle">Everything that must be done before the first patient walks in</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="two-col">
+              <div>
+                <div class="proto-label">Legal & Clinical Readiness</div>
+                <ul class="checklist">
+                  <li><div class="check-box"></div>APRN license active in target state</li>
+                  <li><div class="check-box"></div>DEA registration received for new site</li>
+                  <li><div class="check-box"></div>Collaborative Practice Agreement signed and filed</li>
+                  <li><div class="check-box"></div>Malpractice insurance endorsed for new site and state</li>
+                  <li><div class="check-box"></div>General liability and workers' comp active</li>
+                  <li><div class="check-box"></div>Certificate of Occupancy received from municipality</li>
+                  <li><div class="check-box"></div>CLIA waiver applied for (if drawing in-office)</li>
+                  <li><div class="check-box"></div>PDMP enrollment active for target state</li>
+                  <li><div class="check-box"></div>Business entity registered and EIN obtained</li>
+                  <li><div class="check-box"></div>Business bank account open and funded</li>
+                  <li><div class="check-box"></div>Signage permits obtained and signage installed</li>
+                </ul>
+              </div>
+              <div>
+                <div class="proto-label">Clinical Operations Readiness</div>
+                <ul class="checklist">
+                  <li><div class="check-box"></div>EHR configured for new site — all staff have access and are trained</li>
+                  <li><div class="check-box"></div>EPCS live and tested with correct DEA number</div></li>
+                  <li><div class="check-box"></div>Compounding pharmacy account active — test order placed</li>
+                  <li><div class="check-box"></div>Lab ordering account active — test order placed</li>
+                  <li><div class="check-box"></div>Emergency kit fully stocked and inspected</li>
+                  <li><div class="check-box"></div>AED in place and tested</li>
+                  <li><div class="check-box"></div>O₂ tank full and functional</li>
+                  <li><div class="check-box"></div>911 address posted at every clinical station</li>
+                  <li><div class="check-box"></div>All staff completed HIPAA training and signed attestation</li>
+                  <li><div class="check-box"></div>All staff completed emergency protocol review</li>
+                  <li><div class="check-box"></div>Fullscript dispensary linked and tested</li>
+                </ul>
+              </div>
+            </div>
+            <div class="two-col" style="margin-top:1.25rem">
+              <div>
+                <div class="proto-label">Patient Experience Readiness</div>
+                <ul class="checklist">
+                  <li><div class="check-box"></div>Patient portal live and tested — invite workflow working</li>
+                  <li><div class="check-box"></div>Online scheduling active — first appointments booked</li>
+                  <li><div class="check-box"></div>Phone system live with professional greeting</li>
+                  <li><div class="check-box"></div>Consent forms loaded in EHR and tested</li>
+                  <li><div class="check-box"></div>Payment processing live — test transaction completed</li>
+                  <li><div class="check-box"></div>Superbill template created and tested</li>
+                  <li><div class="check-box"></div>Welcome packet / new patient materials printed</li>
+                </ul>
+              </div>
+              <div>
+                <div class="proto-label">Marketing Readiness</div>
+                <ul class="checklist">
+                  <li><div class="check-box"></div>Google Business Profile verified and updated with hours and photos</li>
+                  <li><div class="check-box"></div>Website updated with new location page — indexed by Google</li>
+                  <li><div class="check-box"></div>Google Ads campaigns active and tracking conversions</li>
+                  <li><div class="check-box"></div>Social media posts scheduled for opening week</li>
+                  <li><div class="check-box"></div>Referring physician outreach completed — at least 10 offices contacted</li>
+                  <li><div class="check-box"></div>Waitlist contacted and appointments confirmed for opening week</li>
+                  <li><div class="check-box"></div>Grand opening event planned (if applicable)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s8-day1" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🗓️</div>
+              <div><div class="card-title">Opening Day Protocol</div>
+              <div class="card-subtitle">The exact flow for the first day of patient care</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Opening Day Run of Show</div>
+              <ul class="proto-list numbered">
+                <li><strong>60 minutes before first patient:</strong> Provider and MA arrive. Walk through all exam rooms — supplies stocked, equipment functional, clean and presentable. Emergency kit verified. AED on. O₂ tank on.</li>
+                <li><strong>45 minutes before:</strong> Front desk arrives. Systems confirmed live: phone, EHR, payment processing, scheduling. First patient charts pulled up and reviewed. Labs confirmed received for any patient with lab review visit.</li>
+                <li><strong>30 minutes before:</strong> Team brief — 15 minutes. Review the day: number of patients, any special circumstances, reminder of escalation protocols, assign emergency coordinator role for the day.</li>
+                <li><strong>First patient:</strong> Greet by name at arrival. Do not let anyone sit waiting without acknowledgment within 30 seconds of entering. MA rooms efficiently. Provider enters with full focus — no phone, no interruptions.</li>
+                <li><strong>End of day debrief (15 min):</strong> What went well? What was confusing or broke down? Any supply issues? Any patient concerns that need follow-up? Document action items. This debrief is mandatory for the first 30 days.</li>
+              </ul>
+            </div>
+            <div class="success-box" style="margin-top:1rem"><div class="note-label">Opening Day Success Metric</div>
+              <div class="note-text">Every patient who walks out of the first day of a new Valère site should feel they experienced something different from every other medical appointment they've had. That is the standard. Not "fine." Not "efficient." Different. They should be able to articulate: "She actually listened. She knew what she was talking about. I felt like she saw me." If those three things happen on Day 1, the word-of-mouth engine is already running.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s8-90" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📅</div>
+              <div><div class="card-title">First 90 Days Milestones</div>
+              <div class="card-subtitle">What success looks like at 30, 60, and 90 days</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="three-col">
+              <div class="info-block"><div class="info-label">Day 30 — Foundation</div><ul class="proto-list" style="margin-top:0.25rem">
+                <li>20+ new patients seen</li>
+                <li>15+ Google reviews</li>
+                <li>All systems operational without critical issues</li>
+                <li>Staff performing independently in their roles</li>
+                <li>First follow-up visits from opening patients booked</li>
+                <li>Referral relationships initiated with 5+ provider offices</li>
+                <li>No unresolved compliance gaps identified</li>
+              </ul></div>
+              <div class="info-block"><div class="info-label">Day 60 — Building</div><ul class="proto-list" style="margin-top:0.25rem">
+                <li>50+ active patients in the panel</li>
+                <li>25+ Google reviews</li>
+                <li>Revenue trending toward $20K+/month</li>
+                <li>First Fullscript revenue arriving</li>
+                <li>At least 2 referring provider relationships active</li>
+                <li>Staff 30-day check-ins completed</li>
+                <li>Google Ads cost per acquisition below $300</li>
+              </ul></div>
+              <div class="info-block"><div class="info-label">Day 90 — Proving</div><ul class="proto-list" style="margin-top:0.25rem">
+                <li>80–100+ active patients</li>
+                <li>Revenue at $35K–$50K/month (standard site)</li>
+                <li>Patient retention rate above 75%</li>
+                <li>Net Promoter Score data collection started</li>
+                <li>Break-even timeline confirmed or revised based on actual data</li>
+                <li>Staff 90-day reviews completed</li>
+                <li>Decision point: hire Practice Manager? Add second MA? Expand hours?</li>
+              </ul></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s8-kpi" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📊</div>
+              <div><div class="card-title">KPIs & Practice Dashboard</div>
+              <div class="card-subtitle">The numbers that tell you if the site is healthy</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <table class="proto-table">
+              <thead><tr><th>KPI</th><th>How to Measure</th><th>Target</th><th>Warning</th></tr></thead>
+              <tbody>
+                <tr><td><strong>New patients per month</strong></td><td>EHR new patient visit count</td><td>15–25/month at ramp, 20–30+ at maturity</td><td>&lt;10/month after Month 3 — reassess marketing spend</td></tr>
+                <tr><td><strong>Patient retention rate</strong></td><td>% of patients with 2nd visit within 6 months</td><td>&gt;75%</td><td>&lt;60% — investigate patient experience and follow-up process</td></tr>
+                <tr><td><strong>Revenue per patient per year</strong></td><td>Total revenue ÷ active patients</td><td>$1,200–$2,500</td><td>&lt;$800 — pricing or visit frequency issue</td></tr>
+                <tr><td><strong>Provider utilization</strong></td><td>Actual visits ÷ available slots</td><td>75–85%</td><td>&lt;60% — marketing problem. &gt;90% — staffing/schedule problem</td></tr>
+                <tr><td><strong>Average revenue per visit</strong></td><td>Total revenue ÷ total visits</td><td>$250–$350</td><td>&lt;$200 — mix problem (too many low-value visits relative to procedures)</td></tr>
+                <tr><td><strong>Cost per new patient acquisition</strong></td><td>Total marketing spend ÷ new patients</td><td>&lt;$200</td><td>&gt;$400 — review channel performance, pause underperforming campaigns</td></tr>
+                <tr><td><strong>Google review count and rating</strong></td><td>Google Business Profile</td><td>4.8+ stars, 30+ reviews by Month 3</td><td>&lt;4.5 stars with 10+ reviews — investigate patient experience immediately</td></tr>
+                <tr><td><strong>Accounts receivable (AR) aging</strong></td><td>Accounting software</td><td>90%+ collected within 30 days (cash pay)</td><td>Uncollected balances above 15% of revenue — billing process issue</td></tr>
+                <tr><td><strong>Fullscript monthly revenue</strong></td><td>Fullscript dashboard</td><td>$50–$100 per active patient per month at scale</td><td>Low Fullscript revenue = patients not being invited / staff not completing the workflow</td></tr>
+                <tr><td><strong>Cash runway remaining</strong></td><td>Bank balance ÷ monthly burn rate</td><td>&gt;6 months at all times</td><td>&lt;3 months — immediate financial intervention required</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §9 ONGOING OPERATIONS -->
+    <div class="section-block" id="s9">
+      <div class="section-header">
+        <div class="section-number">Section 09</div>
+        <h1>Ongoing <em>Operations</em></h1>
+        <p>Daily, weekly, and monthly operating rhythms — plus the annual compliance calendar that keeps the practice clean and protected.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§9 · Ongoing Operations</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s9-daily" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🌅</div>
+              <div><div class="card-title">Daily Operations Rhythm</div>
+              <div class="card-subtitle">Opening · Clinical flow · Closing · Non-negotiable daily tasks</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="two-col">
+              <div>
+                <div class="proto-label">Opening Checklist (MA + Front Desk)</div>
+                <ul class="checklist">
+                  <li><div class="check-box"></div>All exam rooms checked — stocked, clean, ready</li>
+                  <li><div class="check-box"></div>Emergency kit visible and accessible</li>
+                  <li><div class="check-box"></div>AED status light green</li>
+                  <li><div class="check-box"></div>EHR logged in, schedule reviewed</li>
+                  <li><div class="check-box"></div>Labs for today's patients confirmed received</li>
+                  <li><div class="check-box"></div>Phone voicemail checked and returned</li>
+                  <li><div class="check-box"></div>Outstanding portal messages reviewed and triaged</li>
+                  <li><div class="check-box"></div>PDMP checked for any patients receiving CS prescriptions today</li>
+                </ul>
+              </div>
+              <div>
+                <div class="proto-label">Closing Checklist (MA + Front Desk)</div>
+                <ul class="checklist">
+                  <li><div class="check-box"></div>All charts from today finalized or flagged for provider completion</li>
+                  <li><div class="check-box"></div>Outstanding orders reviewed — labs ordered, Rx sent, Fullscript protocols sent</li>
+                  <li><div class="check-box"></div>Tomorrow's schedule reviewed — labs confirmed, special prep noted</li>
+                  <li><div class="check-box"></div>Exam rooms restocked and cleaned</li>
+                  <li><div class="check-box"></div>Biohazard waste secured per protocol</li>
+                  <li><div class="check-box"></div>Computers locked, screens off</li>
+                  <li><div class="check-box"></div>All PHI-containing materials secured or shredded</li>
+                  <li><div class="check-box"></div>Security system armed, building secured</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s9-weekly" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📆</div>
+              <div><div class="card-title">Weekly Rhythms</div>
+              <div class="card-subtitle">Team standup · Financial pulse · Marketing review</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="three-col">
+              <div class="info-block"><div class="info-label">Monday — Weekly Kickoff (15 min)</div><div class="info-val">Review week's schedule. Flag any high-complexity patients or special needs. Confirm lab results are in for this week's visits. Assign the week's Emergency Coordinator. Any pending supply or system issues to address before patients arrive.</div></div>
+              <div class="info-block"><div class="info-label">Wednesday — Mid-Week Pulse (10 min)</div><div class="info-val">Quick check: any open loops from earlier in the week? Outstanding referral letters? Patient callbacks not yet completed? Supply levels adequate through end of week? Any staff issues surfacing?</div></div>
+              <div class="info-block"><div class="info-label">Friday — Week Close (20 min)</div><div class="info-val">Review week's KPIs: visits completed, new patients seen, revenue collected, Google reviews received. Any patient follow-up needed before Monday. Prepare schedule for following week — confirm all pre-visit lab timing. Celebrate a win from the week — this builds culture.</div></div>
+            </div>
+            <div class="note-box" style="margin-top:1.25rem"><div class="note-label">Weekly Financial Pulse</div>
+              <div class="note-text">Every Friday: check the bank balance, review any outstanding invoices, confirm that week's collections match scheduled revenue. Small cash-pay practices can drift into cash flow problems silently — weekly visibility prevents surprises. Takes 10 minutes with a clean QuickBooks setup.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s9-monthly" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📊</div>
+              <div><div class="card-title">Monthly Reviews</div>
+              <div class="card-subtitle">Financial · Clinical · Marketing · Operations</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">Monthly Business Review — First Week of Each Month</div>
+              <ul class="proto-list">
+                <li><strong>Financial:</strong> P&L vs. prior month and vs. projection. Revenue by service line. Payroll as % of revenue. Marketing spend vs. new patients acquired. Cash balance and runway. Any categories over budget — root cause and plan.</li>
+                <li><strong>Clinical volume:</strong> New patients, total visits, follow-up visit rate, cancellation and no-show rate. Provider utilization rate. Any patterns (specific day or time with high cancellations? Specific service with lower retention?).</li>
+                <li><strong>Marketing performance:</strong> Google Ads cost per lead and conversion rate. Google review count and rating. Social media reach and engagement. Top traffic sources to website. Referral source attribution — which referral partners sent patients this month?</li>
+                <li><strong>Operations:</strong> Staff issues or gaps identified. Supply inventory — any close calls or stockouts? Equipment maintenance due? Any compliance events or near-misses? Patient complaints or feedback patterns.</li>
+                <li><strong>Emergency kit inspection:</strong> Due monthly — confirm completed and documented with any items replaced.</li>
+                <li><strong>Decision items:</strong> What needs a decision this month that will affect next month? Staffing, space, marketing budget, pricing — surface it in the monthly review, not the day it becomes urgent.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="s9-compliance" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📅</div>
+              <div><div class="card-title">Annual Compliance Calendar</div>
+              <div class="card-subtitle">Everything that resets or expires — by month</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <table class="proto-table">
+              <thead><tr><th>Month</th><th>Task</th><th>Owner</th></tr></thead>
+              <tbody>
+                <tr><td><strong>January</strong></td><td>HIPAA training annual refresher for all staff · Update regulatory section of The Valère Signal · Review and update all BAAs — any new vendors? · W-2s issued by January 31</td><td>Melani / Office Manager</td></tr>
+                <tr><td><strong>February</strong></td><td>Review malpractice policy — any changes in scope that require endorsement update? · Check DEA registration expiration dates (set renewal at 3 months out) · Employee handbook review — any state law changes requiring update?</td><td>Melani</td></tr>
+                <tr><td><strong>March</strong></td><td>Q1 financial review with CPA (accountant) — estimated tax payment due April 15 · Review Google Ads budget and strategy for Q2 · Staff 90-day reviews if any hired in Q4</td><td>Melani / CPA</td></tr>
+                <tr><td><strong>April</strong></td><td>Federal estimated tax payment (Q1) · Review APRN license renewal dates — any due in next 6 months? Begin renewal process early. · Emergency kit full audit</td><td>Melani / Front Desk</td></tr>
+                <tr><td><strong>June</strong></td><td>Mid-year financial review — on track? Adjust Q3 budget. · Review CPA agreement — physician still practicing, CPA still current, chart review completed per agreement terms · CLIA waiver renewal if applicable (annual fee)</td><td>Melani / CPA</td></tr>
+                <tr><td><strong>July</strong></td><td>Federal estimated tax payment (Q2) · Mid-year staff performance check-in (informal) · Review all vendor BAAs — any expired or needing update?</td><td>Melani</td></tr>
+                <tr><td><strong>September</strong></td><td>ICD-10 code updates effective October 1 — review and update fee schedule and superbill templates · CPT code review — AMA updates effective January 1, preview now</td><td>Front Desk / Biller</td></tr>
+                <tr><td><strong>October</strong></td><td>ICD-10 code changes take effect October 1 · Review DEA inventory — biennial inventory due on registration date (every 2 years) · Malpractice renewal (if annual policy)</td><td>Melani</td></tr>
+                <tr><td><strong>November</strong></td><td>Benefits renewal for staff (if calendar year plan) · Review and update employee handbook for coming year · Federal estimated tax payment (Q3)</td><td>Melani / Office Manager</td></tr>
+                <tr><td><strong>December</strong></td><td>Annual performance reviews for all staff · Year-end financial close with CPA — tax planning · DEA telehealth flexibility review — current extension through December 2026; confirm 2027 status · Update The Valère Signal and Blueprint for new year · Emergency kit full audit · Review all license and certification renewal dates for coming year</td><td>Melani / CPA</td></tr>
+                <tr><td><strong>Monthly (every month)</strong></td><td>Emergency kit inspection and documentation · Check all medication expiration dates · Review bank balance and cash runway · Google reviews check and response</td><td>MA / Front Desk</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §10 GROWTH & EXPANSION -->
+    <div class="section-block" id="s10">
+      <div class="section-header">
+        <div class="section-number">Section 10</div>
+        <h1>Growth &<br><em>Expansion</em></h1>
+        <p>Telehealth state expansion, the multi-site model, Beyond Baseline integration, and the supplement brand opportunity — how Valère scales intelligently.</p>
+      </div>
+      <div class="sticky-tab">
+        <span class="sticky-tab-name">§10 · Growth & Expansion</span>
+        <a class="sticky-tab-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</a>
+      </div>
+      <div class="content-area">
+
+        <div id="s10-telehealth" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🌐</div>
+              <div><div class="card-title">Telehealth State Expansion</div>
+              <div class="card-subtitle">Lowest-cost, lowest-risk expansion path — expand virtually first</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="note-box"><div class="note-label">Telehealth Expansion Logic</div>
+              <div class="note-text">Before opening any physical site in a new state, test the market with telehealth. Telehealth expansion requires: APRN license in the target state, DEA registration (or current telehealth flexibility coverage), and a compounding pharmacy licensed to ship into that state. Total capital requirement is licensing fees only — typically $2K–$5K total. Physical site expansion requires $75K–$350K. Test the market first. If telehealth volume validates demand, physical site becomes a lower-risk decision.</div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Telehealth Expansion Checklist — New State</div>
+              <ul class="proto-list numbered">
+                <li>Apply for APRN license in target state — use standard application checklist (§2.2)</li>
+                <li>Confirm DEA coverage — existing DEA valid under telehealth flexibilities OR apply for state-specific DEA registration</li>
+                <li>Confirm compounding pharmacy has non-resident permit in target state</li>
+                <li>Add state endorsement to malpractice policy</li>
+                <li>Register for target state PDMP before any CS prescribing</li>
+                <li>Update website with telehealth service available in [state]</li>
+                <li>Add state-specific Google Ads targeting — "hormone therapy [city/state]" searches</li>
+                <li>Update scheduling system to accept patients from new state — confirm intake forms reference state appropriately</li>
+                <li>Train staff on state-specific documentation requirements (patient location documentation at each visit)</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Telehealth Volume Thresholds — Physical Site Trigger</div>
+              <table class="proto-table">
+                <thead><tr><th>Telehealth Volume in State</th><th>Interpretation</th><th>Action</th></tr></thead>
+                <tbody>
+                  <tr><td>0–10 patients/month after 6 months</td><td>Market not responding to telehealth or marketing insufficient</td><td>Reassess marketing strategy before considering physical site. This state is not ready.</td></tr>
+                  <tr><td>10–25 patients/month</td><td>Meaningful demand — market is real</td><td>Increase marketing investment. Begin market research for physical site. 12–18 month horizon.</td></tr>
+                  <tr><td>25–50 patients/month</td><td>Strong telehealth demand — physical site likely justified</td><td>Begin site selection process. Physical site likely generates faster growth than telehealth alone. 6–12 month horizon.</td></tr>
+                  <tr><td>50+ patients/month</td><td>Proven market — physical site clearly justified</td><td>Physical site expansion is low-risk given proven demand. Execute site opening playbook from §1.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="s10-multisite" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🏢</div>
+              <div><div class="card-title">Multi-Site Model</div>
+              <div class="card-subtitle">What changes at site 2 and beyond · Leadership · Standardization</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">What's Different at Site 2</div>
+              <ul class="proto-list">
+                <li><strong>You are no longer the operator of both sites.</strong> Site 2 must have a local Practice Manager who owns daily operations. Without this, quality degrades at both sites. This hire is the single most important decision in multi-site expansion.</li>
+                <li><strong>Clinical quality requires a new control mechanism.</strong> You cannot be in both places. Create a monthly clinical audit process — chart review, patient outcome tracking, protocol compliance check — with a defined standard and a consequence for variance.</li>
+                <li><strong>Culture replication is not automatic.</strong> The Valère Culture Standards in The Valère Signal §14.6 must be actively taught, modeled, and reinforced at the new site — they will not transfer by osmosis. Budget time for Melani to be physically present at Site 2 for the first 60 days.</li>
+                <li><strong>Finance becomes more complex.</strong> Separate P&Ls by site. Shared overhead allocation (marketing, leadership time, playbook development) needs to be formalized. This requires a more sophisticated accounting setup and a CFO-level conversation with your CPA (accountant). Tina (Tina Vidal) as owner manages the financial architecture; Melani manages clinical delivery.</li>
+                <li><strong>Vendor relationships should consolidate.</strong> As you add sites, renegotiate pharmacy, lab, and technology pricing based on combined volume. Multi-site practices have meaningful negotiating leverage that solo sites do not.</li>
+              </ul>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">The Valère Playbook System — Multi-Site Value</div>
+              <div class="note-box"><div class="note-label">Why These Documents Exist</div>
+                <div class="note-text">The Valère Signal and The Valère Blueprint together constitute the operating system of the practice. Every site runs on these documents. A new provider hired at Site 2 reads The Signal and knows exactly how to practice at Valère. A new Practice Manager reads The Blueprint and knows exactly how to open and run a site. This is what makes multi-site expansion possible without Melani being everywhere at once. Maintain these documents. Update them when things change. They are the infrastructure.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s10-beyond" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">📡</div>
+              <div><div class="card-title">Beyond Baseline Health Integration</div>
+              <div class="card-subtitle">Consumer education platform · Newsletter → subscription → patient pipeline</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">The Three-Phase Beyond Baseline Strategy</div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Phase 1 — Current</div>
+                  <div class="timeline-title">Free Email Newsletter</div>
+                  <div class="timeline-desc">Build a subscriber list of health-curious adults across all Valère markets. Weekly or biweekly educational content on hormones, metabolic health, functional medicine, and optimization. No subscription fee. Cost: content creation time. Goal: 1,000–5,000 subscribers before Phase 2.</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Phase 2 — 2027</div>
+                  <div class="timeline-title">Paid Subscription Platform</div>
+                  <div class="timeline-desc">Premium subscription tier with exclusive content, lab interpretation guides, protocol summaries, and Q&A access. $19–$49/month. Revenue from subscribers funds content creation and reduces marketing cost — subscribers convert to Valère patients at higher rates than cold traffic. Target: 500 paid subscribers at $29/month = $14,500/month.</div>
+                </div>
+                <div class="timeline-item future">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-week">Phase 3 — Future</div>
+                  <div class="timeline-title">AI-Powered Lab Interpretation Tool</div>
+                  <div class="timeline-desc">The DNP capstone project: a cardiometabolic intake and lab interpretation AI agent built on Valère's clinical framework. Consumer entry point: upload your labs, get functional interpretation. Provider entry point: trained on The Valère Signal protocols. This becomes the technology moat that differentiates Valère at scale.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s10-supplement" class="protocol-card reveal">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="card-title-group"><div class="card-icon">🌿</div>
+              <div><div class="card-title">Supplement Brand Opportunity</div>
+              <div class="card-subtitle">Private label strategy · Sequencing · Distribution</div></div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="card-body">
+            <div class="protocol-section">
+              <div class="proto-label">The Opportunity</div>
+              <div class="proto-text" style="margin-bottom:1.25rem">Valère dispenses supplements at scale through Fullscript. The natural extension is a private-label supplement line built on the clinical protocols in The Valère Signal — the exact formulations, forms, and doses already proven in the patient population. This is not a pivot — it's an extension of an existing revenue stream with dramatically higher margins.</div>
+              <div class="three-col">
+                <div class="info-block"><div class="info-label">Why the Timing Works</div><div class="info-val">You have clinical proof-of-concept. You know which supplements move in your patient population. You know which forms and doses work. A private label product is more credible coming from a practicing APRN with a track record than from a brand with no clinical context.</div></div>
+                <div class="info-block"><div class="info-label">Minimum Viable Product</div><div class="info-val">Start with 3–5 SKUs — the supplements you recommend most. Likely: methylated B-complex, magnesium glycinate, omega-3, vitamin D3+K2, and one hormone-support formula. Private label manufacturing MOQ is typically 300–1,000 units per SKU. Budget: $15K–$40K for first run.</div></div>
+                <div class="info-block"><div class="info-label">Distribution Strategy</div><div class="info-val">Phase 1: sell exclusively through Valère patient encounters and Fullscript (if private label is permissible under Fullscript terms). Phase 2: Beyond Baseline subscriber direct-to-consumer. Phase 3: Amazon and independent retail if volume justifies. Do not over-distribute early — protect margin and clinical credibility.</div></div>
+              </div>
+            </div>
+            <div class="protocol-section" style="margin-top:1.25rem">
+              <div class="proto-label">Sequencing — Do This in Order</div>
+              <ul class="proto-list numbered">
+                <li>Confirm Fullscript terms permit private label dispensing alongside Fullscript brands</li>
+                <li>Identify contract manufacturer with NSF certification or USP verification — quality matters more than cost for a clinical brand</li>
+                <li>Start with your highest-volume single-ingredient supplements where form and dose differentiation is clear</li>
+                <li>Register products with FDA (dietary supplement notification is not required but facility registration is)</li>
+                <li>Develop compliant labeling — FTC and FDA rules on supplement claims are strict. "Supports healthy hormone balance" is permissible. "Boosts testosterone" is not without clinical substantiation.</li>
+                <li>Launch to existing patient population first — gather testimonials and refine the product before broader distribution</li>
+              </ul>
+            </div>
+            <div class="warn-box" style="margin-top:1rem"><div class="note-label">Do Not Do This Until</div>
+              <div class="note-text">The supplement brand should not be started until: Valère Tallahassee is profitable, at least one new site or telehealth state is operational and stable, and Melani has dedicated non-clinical time available to manage product development and marketing. Supplement brands built while the clinical practice is still finding its footing become a distraction that harms both. Sequence matters.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background:#1f4a50;padding:3rem 4rem;text-align:center;border-top:1px solid rgba(82,132,137,0.15)">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--white);margin-bottom:0.3rem">Val<em style="color:var(--teal);font-style:italic">è</em>re by CDR Health</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;color:rgba(82,132,137,0.35);text-transform:uppercase;margin-bottom:1.5rem">The Valère Blueprint · Site Opening & Operations · 2026</div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.12em;color:rgba(255,255,255,0.18);line-height:2;text-transform:uppercase">
+        Melani Davis, MSN, APRN, FNP-C &nbsp;·&nbsp; 313 Norton Drive Suite 101B, Tallahassee, FL 32308<br>
+        P: (850) 738-7977 &nbsp;·&nbsp; Valerebycdr.com &nbsp;·&nbsp; Confidential — Internal Use Only
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+function toggleCard(header){
+  const card=header.closest('.protocol-card');
+  card.classList.toggle('card-open');
+}
+function goto(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(event&&event.target)event.target.classList.add('active');
+}
+
+// Scroll reveal
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});
+},{threshold:0.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Search
+const searchInput=document.getElementById('search-input');
+if(searchInput){
+  searchInput.addEventListener('input',function(){
+    const q=this.value.toLowerCase().trim();
+    if(!q){document.querySelectorAll('.protocol-card').forEach(c=>c.style.display='');return;}
+    document.querySelectorAll('.protocol-card').forEach(card=>{
+      const match=card.textContent.toLowerCase().includes(q);
+      card.style.display=match?'':'none';
+      if(match)card.classList.add('card-open');
+    });
+  });
+}
+
+// Auto-open first card per section
+document.querySelectorAll('.section-block').forEach(section=>{
+  const first=section.querySelector('.protocol-card');
+  if(first)first.classList.add('card-open');
+});
+
+// Active nav on scroll
+const mainEl=document.getElementById('main');
+const sections=document.querySelectorAll('.section-block');
+if(mainEl){
+  mainEl.addEventListener('scroll',()=>{
+    const scrollTop=mainEl.scrollTop;
+    sections.forEach(section=>{
+      const top=section.offsetTop-100;
+      const bottom=top+section.offsetHeight;
+      if(scrollTop>=top&&scrollTop<bottom){
+        const id=section.id;
+        document.querySelectorAll('.nav-item').forEach(n=>{
+          if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'")){
+            n.classList.add('active');
+          } else {n.classList.remove('active');}
+        });
+      }
+    });
+  });
+}
+</script>
+</body>
+</html>
